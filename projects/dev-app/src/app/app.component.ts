@@ -1,13 +1,19 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RndDialog, RndDialogDragHandle } from '@acrodata/rnd-dialog';
+import { Component, inject, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RndDialogDragHandle],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'dev-app';
+  private rndDialog = inject(RndDialog);
+
+  openDialog(tpl: TemplateRef<any>) {
+    this.rndDialog.open(tpl, {
+      data: 'Hello, World!',
+    });
+  }
 }
