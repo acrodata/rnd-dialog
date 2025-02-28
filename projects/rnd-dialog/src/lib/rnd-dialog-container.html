@@ -1,0 +1,8 @@
+<ng-template cdkPortalOutlet />
+
+@for (dir of handleDirs; track dir) {
+  <div
+    class="resizable-handle resizable-handle-{{ dir }}"
+    (mousedown)="onMousedown($event, dir)"
+  ></div>
+}

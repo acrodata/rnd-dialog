@@ -1,0 +1,80 @@
+@use 'sass:math';
+
+$handle-size: 8px;
+
+.rnd-dialog-container {
+  position: absolute;
+  display: block;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .12);
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .12);
+}
+
+.resizable-handle {
+  position: absolute;
+}
+
+.resizable-handle-e,
+.resizable-handle-w {
+  top: 0;
+  bottom: 0;
+  width: $handle-size;
+  cursor: ew-resize;
+}
+
+.resizable-handle-e {
+  right: math.div(-$handle-size, 2);
+}
+
+.resizable-handle-w {
+  left: math.div(-$handle-size, 2);
+}
+
+.resizable-handle-n,
+.resizable-handle-s {
+  right: 0;
+  left: 0;
+  height: $handle-size;
+  cursor: ns-resize;
+}
+
+.resizable-handle-n {
+  top: math.div(-$handle-size, 2);
+}
+
+.resizable-handle-s {
+  bottom: math.div(-$handle-size, 2);
+}
+
+.resizable-handle-ne,
+.resizable-handle-nw,
+.resizable-handle-se,
+.resizable-handle-sw {
+  z-index: 1;
+  width: $handle-size;
+  height: $handle-size;
+}
+
+.resizable-handle-ne {
+  top: math.div(-$handle-size, 2);
+  right: math.div(-$handle-size, 2);
+  cursor: nesw-resize;
+}
+
+.resizable-handle-nw {
+  top: math.div(-$handle-size, 2);
+  left: math.div(-$handle-size, 2);
+  cursor: nwse-resize;
+}
+
+.resizable-handle-se {
+  right: math.div(-$handle-size, 2);
+  bottom: math.div(-$handle-size, 2);
+  cursor: nwse-resize;
+}
+
+.resizable-handle-sw {
+  bottom: math.div(-$handle-size, 2);
+  left: math.div(-$handle-size, 2);
+  cursor: nesw-resize;
+}
