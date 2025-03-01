@@ -1,9 +1,65 @@
-<div>
+<div class="container">
+  <form>
+    <fieldset>
+      <legend>Dialog config</legend>
+
+      <div>
+        <label for="data">data</label>
+        <input type="text" [(ngModel)]="config.data" name="data" id="data" />
+      </div>
+
+      <div>
+        <label for="width">width</label>
+        <input type="text" [(ngModel)]="config.width" name="width" id="width" />
+
+        <label for="height">height</label>
+        <input type="text" [(ngModel)]="config.height" name="height" id="height" />
+      </div>
+
+      <div>
+        <label for="minWidth">minWidth</label>
+        <input type="text" [(ngModel)]="config.minWidth" name="minWidth" id="minWidth" />
+
+        <label for="minHeight">minHeight</label>
+        <input type="text" [(ngModel)]="config.minHeight" name="minHeight" id="minHeight" />
+      </div>
+
+      <div>
+        <label for="maxWidth">maxWidth</label>
+        <input type="text" [(ngModel)]="config.maxWidth" name="maxWidth" id="maxWidth" />
+
+        <label for="maxHeight">maxHeight</label>
+        <input type="text" [(ngModel)]="config.maxHeight" name="maxHeight" id="maxHeight" />
+      </div>
+
+      <div>
+        <input
+          type="checkbox"
+          [(ngModel)]="config.hasBackdrop"
+          name="hasBackdrop"
+          id="hasBackdrop"
+        />
+        <label for="hasBackdrop">hasBackdrop</label>
+      </div>
+
+      <div>
+        <input
+          type="checkbox"
+          [(ngModel)]="config.disableClose"
+          name="disableClose"
+          id="disableClose"
+        />
+        <label for="disableClose">disableClose</label>
+      </div>
+    </fieldset>
+  </form>
+
   <button (click)="openDialog(dialogTpl)">Open dialog</button>
 
   <ng-template #dialogTpl let-data let-dialogRef="dialogRef">
     <div class="drag-handle" rndDialogDragHandle>
-      Drag handle <button (click)="dialogRef.close()">close</button>
+      Drag handle
+      <button (click)="dialogRef.close()">close</button>
     </div>
 
     <p>{{ data }}</p>
