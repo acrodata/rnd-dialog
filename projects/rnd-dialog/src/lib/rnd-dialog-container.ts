@@ -1,9 +1,10 @@
-import { CdkDialogContainer } from '@angular/cdk/dialog';
+import { CdkDialogContainer, DialogRef } from '@angular/cdk/dialog';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  inject,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
@@ -11,6 +12,17 @@ import { OnEvent } from '@scena/event-emitter';
 import Gesto, { OnDrag } from 'gesto';
 
 type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
+
+// 将任意单位的 CSS 宽高转换成数值
+export function getElementSize(width: string, height: string) {
+  const div = document.createElement('div');
+  div.style.cssText = `position: absolute; top: -9999px; width: ${width}; height: ${height}`;
+  document.body.appendChild(div);
+  const divWidth = div.offsetWidth;
+  const divHeight = div.offsetHeight;
+  document.body.removeChild(div);
+  return { w: divWidth, h: divHeight };
+}
 
 @Component({
   selector: 'rnd-dialog-container',
@@ -36,18 +48,27 @@ type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
   },
 })
 export class RndDialogContainer extends CdkDialogContainer implements OnInit, AfterViewInit {
+  private dialogRef = inject(DialogRef);
   private gesto?: Gesto;
 
   get containerElement() {
     return this._elementRef.nativeElement as HTMLElement;
   }
 
+  get overlayElement() {
+    return this.dialogRef.overlayRef.overlayElement;
+  }
+
   handleDirs: resizableHandleDir[] = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
 
   dir: resizableHandleDir | null = null;
 
-  minWidth = parseInt((this._config.minWidth || '') + '') || 200;
-  minHeight = parseInt((this._config.minHeight || '') + '') || 200;
+  minW = 200;
+  minH = 200;
+  maxW = Infinity;
+  maxH = Infinity;
+  windowW = window.innerWidth;
+  windowH = window.innerHeight;
 
   w = 400;
   h = 400;
@@ -61,15 +82,25 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   startY = 0;
 
   // n 方向和 w 方向的限制坐标
-  restrictX = this.x;
-  restrictY = this.y;
+  restrictX = 0;
+  restrictY = 0;
 
   resizeHandleElements: HTMLElement[] = [];
 
   ngOnInit(): void {
+    const { minWidth, minHeight, maxWidth, maxHeight } = this.overlayElement.style;
+
+    const minSize = getElementSize(minWidth, minHeight);
+    this.minW = minSize.w || 200;
+    this.minH = minSize.h || 200;
+
+    const maxSize = getElementSize(maxWidth, maxHeight);
+    this.maxW = maxSize.w || Infinity;
+    this.maxH = maxSize.h || Infinity;
+
     // 获取非 px 单位的尺寸信息
-    this.w = this.containerElement.parentElement?.offsetWidth || 400;
-    this.h = this.containerElement.parentElement?.offsetHeight || 400;
+    this.w = this.overlayElement.offsetWidth || 400;
+    this.h = this.overlayElement.offsetHeight || 400;
 
     // 弹窗初始化居中
     this.x = (window.innerWidth - this.w) / 2;
@@ -95,8 +126,8 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     this.startX = this.x;
     this.startY = this.y;
 
-    this.restrictX = this.x + this.w - this.minWidth;
-    this.restrictY = this.y + this.h - this.minHeight;
+    this.restrictX = this.x + this.w - this.minW;
+    this.restrictY = this.y + this.h - this.minH;
 
     this.gesto?.on('drag', this.onDrag).on('dragEnd', this.onDragEnd);
   }
@@ -104,26 +135,38 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   onDrag = (e: OnEvent<OnDrag<Gesto>, Gesto>) => {
     // e 方向的宽度
     const eW = Math.min(
-      Math.max(this.startW + e.distX, this.minWidth),
-      window.innerWidth - this.startX
+      Math.max(this.startW + e.distX, this.minW),
+      this.maxW,
+      this.windowW - this.startX
     );
     // s 方向的高度
     const sH = Math.min(
-      Math.max(this.startH + e.distY, this.minHeight),
-      window.innerHeight - this.startY
+      Math.max(this.startH + e.distY, this.minH),
+      this.maxH,
+      this.windowH - this.startY
     );
     // w 方向的宽度
-    const wW = Math.min(Math.max(this.startW - e.distX, this.minWidth), this.startW + this.startX);
+    const wW = Math.min(
+      Math.max(this.startW - e.distX, this.minW),
+      this.maxW,
+      this.startW + this.startX
+    );
     // n 方向的高度
-    const nH = Math.min(Math.max(this.startH - e.distY, this.minHeight), this.startH + this.startY);
+    const nH = Math.min(
+      Math.max(this.startH - e.distY, this.minH),
+      this.maxH,
+      this.startH + this.startY
+    );
     // w 方向的 x 坐标，不能超出屏幕，参考 Mac 窗口行为
     const wX = Math.max(
-      this.startW - e.distX > this.minWidth ? this.startX + e.distX : this.restrictX,
+      this.startW - e.distX > this.minW ? this.startX + e.distX : this.restrictX,
+      this.startX + this.startW - this.maxW,
       0
     );
     // n 方向的 y 坐标，不能超出屏幕，参考 Mac 窗口行为
     const nY = Math.max(
-      this.startH - e.distY > this.minHeight ? this.startY + e.distY : this.restrictY,
+      this.startH - e.distY > this.minH ? this.startY + e.distY : this.restrictY,
+      this.startY + this.startH - this.maxH,
       0
     );
 

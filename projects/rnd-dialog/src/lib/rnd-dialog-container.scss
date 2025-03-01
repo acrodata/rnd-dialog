@@ -8,6 +8,7 @@ $handle-size: 8px;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, .12);
   box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .12);
+  box-sizing: border-box;
 }
 
 .resizable-handle {

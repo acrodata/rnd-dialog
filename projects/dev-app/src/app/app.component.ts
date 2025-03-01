@@ -16,12 +16,12 @@ export class AppComponent {
 
   config: DialogConfig<string, DialogRef> = {
     data: 'Hello, World!',
-    width: '600px',
-    height: '600px',
-    minWidth: '300px',
-    minHeight: '300px',
-    maxWidth: '800px',
-    maxHeight: '800px',
+    width: '400px',
+    height: '400px',
+    minWidth: '20%',
+    minHeight: '20%',
+    maxWidth: '80vw',
+    maxHeight: '80vh',
     hasBackdrop: true,
     disableClose: false,
   };
