@@ -1,11 +1,29 @@
 {
-  "name": "rnd-dialog",
-  "version": "0.0.1",
+  "name": "@acrodata/rnd-dialog",
+  "version": "0.1.0",
+  "description": "Resizable and draggable dialog",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "nzbin<nzb329@163.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/acrodata/rnd-dialog.git"
+  },
+  "homepage": "https://acrodata.github.io/rnd-dialog/",
+  "keywords": [
+    "modal",
+    "dialog",
+    "draggable",
+    "resizable"
+  ],
   "peerDependencies": {
-    "@angular/common": "^19.0.0",
-    "@angular/core": "^19.0.0"
+    "@angular/cdk": ">=16.0.0",
+    "@angular/core": ">=16.0.0"
   },
   "dependencies": {
+    "gesto": "^1.19.4",
     "tslib": "^2.3.0"
   },
   "sideEffects": false
