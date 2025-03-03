@@ -1,12 +1,11 @@
 .rnd-dialog-container {
-  --resizable-handle-size: 8px;
-
+  box-sizing: border-box;
   position: absolute;
   display: block;
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
-  box-sizing: border-box;
+  background-color: var(--rnd-dialog-container-color, #fff);
+  border: 1px solid var(--rnd-dialog-container-outline-color, rgba(0, 0, 0, 0.12));
+  border-radius: var(--rnd-dialog-container-shape, 0);
+  box-shadow: var(--rnd-dialog-container-shadow, 0 4px 16px 0 rgba(0, 0, 0, 0.12));
 }
 
 .resizable-handle {
@@ -17,32 +16,32 @@
 .resizable-handle-w {
   top: 0;
   bottom: 0;
-  width: var(--resizable-handle-size);
+  width: var(--resizable-handle-size, 8px);
   cursor: ew-resize;
 }
 
 .resizable-handle-e {
-  right: calc(var(--resizable-handle-size) / -2);
+  right: calc(var(--resizable-handle-size, 8px) / -2);
 }
 
 .resizable-handle-w {
-  left: calc(var(--resizable-handle-size) / -2);
+  left: calc(var(--resizable-handle-size, 8px) / -2);
 }
 
 .resizable-handle-n,
 .resizable-handle-s {
   right: 0;
   left: 0;
-  height: var(--resizable-handle-size);
+  height: var(--resizable-handle-size, 8px);
   cursor: ns-resize;
 }
 
 .resizable-handle-n {
-  top: calc(var(--resizable-handle-size) / -2);
+  top: calc(var(--resizable-handle-size, 8px) / -2);
 }
 
 .resizable-handle-s {
-  bottom: calc(var(--resizable-handle-size) / -2);
+  bottom: calc(var(--resizable-handle-size, 8px) / -2);
 }
 
 .resizable-handle-ne,
@@ -50,30 +49,30 @@
 .resizable-handle-se,
 .resizable-handle-sw {
   z-index: 1;
-  width: var(--resizable-handle-size);
-  height: var(--resizable-handle-size);
+  width: var(--resizable-handle-size, 8px);
+  height: var(--resizable-handle-size, 8px);
 }
 
 .resizable-handle-ne {
-  top: calc(var(--resizable-handle-size) / -2);
-  right: calc(var(--resizable-handle-size) / -2);
+  top: calc(var(--resizable-handle-size, 8px) / -2);
+  right: calc(var(--resizable-handle-size, 8px) / -2);
   cursor: nesw-resize;
 }
 
 .resizable-handle-nw {
-  top: calc(var(--resizable-handle-size) / -2);
-  left: calc(var(--resizable-handle-size) / -2);
+  top: calc(var(--resizable-handle-size, 8px) / -2);
+  left: calc(var(--resizable-handle-size, 8px) / -2);
   cursor: nwse-resize;
 }
 
 .resizable-handle-se {
-  right: calc(var(--resizable-handle-size) / -2);
-  bottom: calc(var(--resizable-handle-size) / -2);
+  right: calc(var(--resizable-handle-size, 8px) / -2);
+  bottom: calc(var(--resizable-handle-size, 8px) / -2);
   cursor: nwse-resize;
 }
 
 .resizable-handle-sw {
-  bottom: calc(var(--resizable-handle-size) / -2);
-  left: calc(var(--resizable-handle-size) / -2);
+  bottom: calc(var(--resizable-handle-size, 8px) / -2);
+  left: calc(var(--resizable-handle-size, 8px) / -2);
   cursor: nesw-resize;
 }
