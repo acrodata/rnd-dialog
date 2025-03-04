@@ -5,3 +5,4 @@
 export * from './lib/rnd-dialog';
 export * from './lib/rnd-dialog-container';
 export * from './lib/rnd-dialog-drag-handle';
+export * from './lib/utils';

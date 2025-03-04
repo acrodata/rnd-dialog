@@ -10,19 +10,9 @@ import {
 } from '@angular/core';
 import { OnEvent } from '@scena/event-emitter';
 import Gesto, { OnDrag } from 'gesto';
+import { getElementSize } from './utils';
 
 type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
-
-// 将任意单位的 CSS 宽高转换成数值
-export function getElementSize(width: string, height: string) {
-  const div = document.createElement('div');
-  div.style.cssText = `position: absolute; top: -9999px; width: ${width}; height: ${height}`;
-  document.body.appendChild(div);
-  const divWidth = div.offsetWidth;
-  const divHeight = div.offsetHeight;
-  document.body.removeChild(div);
-  return { w: divWidth, h: divHeight };
-}
 
 @Component({
   selector: 'rnd-dialog-container',
@@ -103,8 +93,8 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     this.h = this.overlayElement.offsetHeight || 400;
 
     // 弹窗初始化居中
-    this.x = (window.innerWidth - this.w) / 2;
-    this.y = (window.innerHeight - this.h) / 2;
+    this.x = (this.windowW - this.w) / 2;
+    this.y = (this.windowH - this.h) / 2;
   }
 
   ngAfterViewInit(): void {
@@ -115,7 +105,7 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     this.gesto = new Gesto(this.resizeHandleElements, {});
 
     // 移除 cdk-overlay-pane 的尺寸样式
-    this.containerElement.parentElement?.removeAttribute('style');
+    this.overlayElement.removeAttribute('style');
   }
 
   onMousedown(e: MouseEvent, dir: resizableHandleDir) {
