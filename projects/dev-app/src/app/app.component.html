@@ -59,7 +59,12 @@
   <button (click)="openDialog(dialogTpl)">Open dialog</button>
 
   <ng-template #dialogTpl let-data let-dialogRef="dialogRef">
-    <div class="drag-handle" rndDialogDragHandle>
+    <div
+      rndDialogDragHandle
+      #dragHandle="rndDialogDragHandle"
+      class="drag-handle"
+      [class.dragging]="dragHandle.isDragging"
+    >
       Drag handle
       <button (click)="dialogRef.close()">close</button>
     </div>

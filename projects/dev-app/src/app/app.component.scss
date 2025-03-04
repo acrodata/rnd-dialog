@@ -10,6 +10,10 @@
   padding: 8px;
   border: 1px dashed;
   cursor: grab;
+
+  &.dragging {
+    cursor: grabbing;
+  }
 }
 
 form {
