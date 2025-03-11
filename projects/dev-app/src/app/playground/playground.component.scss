@@ -1,0 +1,21 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.drag-handle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border: 1px dashed;
+  cursor: grab;
+
+  &.dragging {
+    cursor: grabbing;
+  }
+}
+
+form {
+  margin-bottom: 16px;
+}
