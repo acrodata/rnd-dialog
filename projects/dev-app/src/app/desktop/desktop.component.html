@@ -1,0 +1,14 @@
+<div class="menu-toolbar"></div>
+
+<div class="desktop"></div>
+
+<div class="dock">
+  @for (app of apps; track $index) {
+    <div
+      class="app"
+      (click)="openDialog()"
+      aria-hidden="true"
+      [style.background-color]="app.color"
+    ></div>
+  }
+</div>

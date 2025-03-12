@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  height: 100vh;
+  background: url('/images/sequoia-light.jpg') center/cover;
+}
+
+.menu-toolbar {
+  height: 24px;
+  background-color: rgba(255, 255, 255, .32);
+  backdrop-filter: blur(30px);
+}
+
+.desktop {
+  position: relative;
+  height: calc(100vh - 24px);
+}
+
+.dock {
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  display: flex;
+  gap: 8px;
+  height: 54px;
+  padding: 8px;
+  background-color: rgba(255, 255, 255, .32);
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, .24);
+  transform: translate(-50%, 0);
+  box-shadow: 0 0 10px 4px rgba(0, 0, 0, .12);
+}
+
+.app {
+  width: 36px;
+  height: 36px;
+  background-color: white;
+  border-radius: 8px;
+}
