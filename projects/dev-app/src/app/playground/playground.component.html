@@ -1,21 +1,12 @@
-<div class="container">
-  <h1>Rnd-Dialog</h1>
+<app-dialog-header rndDialogDragHandle>Rnd-Dialog</app-dialog-header>
 
+<app-dialog-content>
   <gui-form [config]="guiConfig" [model]="guiModel" />
 
-  <button mat-flat-button (click)="openDialog(dialogTpl)">Open dialog</button>
+  <button (click)="openDialog(dialogTpl)">Open dialog</button>
 
   <ng-template #dialogTpl let-data let-dialogRef="dialogRef">
-    <div
-      rndDialogDragHandle
-      #dragHandle="rndDialogDragHandle"
-      class="drag-handle"
-      [class.dragging]="dragHandle.isDragging"
-    >
-      Drag handle
-      <button (click)="dialogRef.close()">close</button>
-    </div>
-
+    <app-dialog-header rndDialogDragHandle>Drag handle</app-dialog-header>
     <p>{{ data }}</p>
   </ng-template>
-</div>
+</app-dialog-content>

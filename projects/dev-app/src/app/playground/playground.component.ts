@@ -4,11 +4,20 @@ import { DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { Component, inject, TemplateRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { DialogHeaderComponent } from '../dialog-header/dialog-header.component';
+import { DialogContentComponent } from '../dialog-content/dialog-content.component';
 
 @Component({
   selector: 'app-playground',
   standalone: true,
-  imports: [FormsModule, RndDialogDragHandle, GuiModule, MatButtonModule],
+  imports: [
+    FormsModule,
+    RndDialogDragHandle,
+    GuiModule,
+    MatButtonModule,
+    DialogHeaderComponent,
+    DialogContentComponent,
+  ],
   templateUrl: './playground.component.html',
   styleUrl: './playground.component.scss',
 })

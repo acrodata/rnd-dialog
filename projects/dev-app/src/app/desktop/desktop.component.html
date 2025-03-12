@@ -6,9 +6,9 @@
   @for (app of apps; track $index) {
     <div
       class="app"
-      (click)="openDialog()"
-      aria-hidden="true"
       [style.background-color]="app.color"
+      aria-hidden="true"
+      (click)="openDialog()"
     ></div>
   }
 </div>

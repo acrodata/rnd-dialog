@@ -16,13 +16,15 @@ export class DesktopComponent implements OnInit {
     { name: '1', color: '#ff605c' },
     { name: '2', color: '#ffbd44' },
     { name: '3', color: '#00ca4e' },
-    { name: '4', color: '#238eff' },
-    { name: '5', color: '#e1dfe1' },
+    { name: '4', color: '#0043ff' },
+    { name: '5', color: '#8a03c4' },
   ];
 
   ngOnInit(): void {}
 
   openDialog() {
-    this.rndDialog.open(PlaygroundComponent);
+    this.rndDialog.open(PlaygroundComponent, {
+      hasBackdrop: false,
+    });
   }
 }
