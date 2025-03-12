@@ -1,30 +1,29 @@
 import { GuiFields, GuiModule } from '@acrodata/gui';
-import { RndDialog, RndDialogDragHandle } from '@acrodata/rnd-dialog';
-import { DialogConfig, DialogRef } from '@angular/cdk/dialog';
-import { Component, inject, TemplateRef } from '@angular/core';
+import { RndDialogDragHandle } from '@acrodata/rnd-dialog';
+import { DIALOG_DATA, DialogConfig, DialogRef } from '@angular/cdk/dialog';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { DialogHeaderComponent } from '../dialog-header/dialog-header.component';
+import { AppItem } from '../desktop/desktop.component';
 import { DialogContentComponent } from '../dialog-content/dialog-content.component';
+import { DialogHeaderComponent } from '../dialog-header/dialog-header.component';
 
 @Component({
-  selector: 'app-playground',
+  selector: 'app-settings',
   standalone: true,
   imports: [
     FormsModule,
-    RndDialogDragHandle,
     GuiModule,
-    MatButtonModule,
+    RndDialogDragHandle,
     DialogHeaderComponent,
     DialogContentComponent,
   ],
-  templateUrl: './playground.component.html',
-  styleUrl: './playground.component.scss',
+  templateUrl: './settings.component.html',
+  styleUrl: './settings.component.scss',
 })
-export class PlaygroundComponent {
-  private rndDialog = inject(RndDialog);
+export class SettingsComponent {
+  data = inject<AppItem>(DIALOG_DATA);
 
-  guiConfig: GuiFields = {
+  config: GuiFields = {
     data: {
       name: 'data',
       type: 'textarea',
@@ -63,7 +62,7 @@ export class PlaygroundComponent {
     },
   };
 
-  guiModel: DialogConfig<string, DialogRef> = {
+  model: DialogConfig<string, DialogRef> = {
     data: 'Hello, World!',
     width: '400px',
     height: '400px',
@@ -74,8 +73,4 @@ export class PlaygroundComponent {
     hasBackdrop: true,
     disableClose: false,
   };
-
-  openDialog(tpl: TemplateRef<any>) {
-    this.rndDialog.open(tpl, this.guiModel);
-  }
 }
