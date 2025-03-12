@@ -8,7 +8,8 @@ export interface AppItem {
   component: ComponentType<any>;
   name: string;
   color: string;
-  data: Record<string, any>;
+  data: any;
+  active?: boolean;
 }
 
 @Component({
@@ -26,46 +27,53 @@ export class DesktopComponent implements OnInit {
       component: DialogWrapperComponent,
       name: '1',
       color: '#ff605c',
-      data: {},
+      data: '',
     },
     {
       component: DialogWrapperComponent,
       name: '2',
       color: '#ffbd44',
-      data: {},
+      data: '',
     },
     {
       component: DialogWrapperComponent,
       name: '3',
       color: '#00ca4e',
-      data: {},
+      data: '',
     },
     {
       component: DialogWrapperComponent,
       name: '4',
       color: '#0043ff',
-      data: {},
+      data: '',
     },
     {
       component: DialogWrapperComponent,
       name: '5',
       color: '#8a03c4',
-      data: {},
+      data: '',
     },
     {
       component: SettingsComponent,
       name: 'settings',
       color: '#e1dfe1',
-      data: {},
+      data: '',
     },
   ];
 
   ngOnInit(): void {}
 
   openDialog(app: AppItem) {
-    this.rndDialog.open(app.component, {
+    if (app.active) return;
+
+    const dialog = this.rndDialog.open(app.component, {
       hasBackdrop: false,
       data: app,
     });
+    dialog.closed.subscribe(v => {
+      app.active = false;
+    });
+
+    app.active = true;
   }
 }
