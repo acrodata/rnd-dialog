@@ -221,6 +221,10 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     // 按照数组顺序设置新的 z-index
     openDialogRefs.forEach((ref, index) => {
       ref.overlayRef.hostElement.style.zIndex = this.defaultZIndex + 1 + index + '';
+      // 如果显示遮罩，则遮罩也要设置 z-index
+      if (ref.overlayRef.backdropElement) {
+        ref.overlayRef.backdropElement.style.zIndex = this.defaultZIndex + 1 + index + '';
+      }
     });
 
     setTimeout(() => {
