@@ -1,4 +1,4 @@
-import { CdkDialogContainer, DialogRef } from '@angular/cdk/dialog';
+import { CdkDialogContainer, Dialog, DialogRef } from '@angular/cdk/dialog';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 import {
   AfterViewInit,
@@ -35,9 +35,12 @@ type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
     '[style.top.px]': 'y',
     '[style.width.px]': 'w',
     '[style.height.px]': 'h',
+    '[class.active]': 'isActive',
+    '(mousedown)': 'setActive()',
   },
 })
 export class RndDialogContainer extends CdkDialogContainer implements OnInit, AfterViewInit {
+  private dialog = inject(Dialog);
   private dialogRef = inject(DialogRef);
   private gesto?: Gesto;
 
@@ -48,6 +51,8 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   get overlayElement() {
     return this.dialogRef.overlayRef.overlayElement;
   }
+
+  isActive = true;
 
   handleDirs: resizableHandleDir[] = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
 
@@ -77,6 +82,8 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
 
   resizeHandleElements: HTMLElement[] = [];
 
+  defaultZIndex = 1000;
+
   ngOnInit(): void {
     const { minWidth, minHeight, maxWidth, maxHeight } = this.overlayElement.style;
 
@@ -95,6 +102,8 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     // 弹窗初始化居中
     this.x = (this.windowW - this.w) / 2;
     this.y = (this.windowH - this.h) / 2;
+
+    this.setActive();
   }
 
   ngAfterViewInit(): void {
@@ -201,4 +210,30 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   onDragEnd = (e: OnEvent<OnDrag<Gesto>, Gesto>) => {
     this.gesto?.off('drag', this.onDrag);
   };
+
+  setActive() {
+    // 先根据元素的 z-index 排序获得实例的顺序列表
+    const openDialogRefs = this.getSortedDialogs();
+    // 将激活的窗口移到数组的末尾
+    const index = openDialogRefs.indexOf(this.dialogRef);
+    openDialogRefs.splice(index, 1);
+    openDialogRefs.push(this.dialogRef);
+    // 按照数组顺序设置新的 z-index
+    openDialogRefs.forEach((ref, index) => {
+      ref.overlayRef.hostElement.style.zIndex = this.defaultZIndex + 1 + index + '';
+    });
+
+    setTimeout(() => {
+      openDialogRefs.forEach(ref => {
+        (ref.containerInstance as RndDialogContainer).isActive = false;
+      });
+      this.isActive = true;
+    });
+  }
+
+  getSortedDialogs() {
+    return [...this.dialog.openDialogs].sort(
+      (a, b) => +a.overlayRef.hostElement.style.zIndex - +b.overlayRef.hostElement.style.zIndex
+    );
+  }
 }
