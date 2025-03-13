@@ -62,15 +62,5 @@ export class SettingsComponent {
     },
   };
 
-  model: DialogConfig<string, DialogRef> = {
-    data: 'Hello, World!',
-    width: '400px',
-    height: '400px',
-    minWidth: '20%',
-    minHeight: '20%',
-    maxWidth: '80vw',
-    maxHeight: '80vh',
-    hasBackdrop: true,
-    disableClose: false,
-  };
+  model = this.data.config;
 }

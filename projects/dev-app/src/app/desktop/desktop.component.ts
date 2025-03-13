@@ -1,6 +1,7 @@
 import { RndDialog } from '@acrodata/rnd-dialog';
+import { DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DialogWrapperComponent } from '../dialog-wrapper/dialog-wrapper.component';
 import { SettingsComponent } from '../settings/settings.component';
 
@@ -8,7 +9,7 @@ export interface AppItem {
   component: ComponentType<any>;
   name: string;
   color: string;
-  data: any;
+  config: DialogConfig<any, DialogRef>;
   active?: boolean;
 }
 
@@ -19,55 +20,65 @@ export interface AppItem {
   templateUrl: './desktop.component.html',
   styleUrl: './desktop.component.scss',
 })
-export class DesktopComponent implements OnInit {
+export class DesktopComponent {
   private rndDialog = inject(RndDialog);
+
+  dialogConfig: DialogConfig<any, DialogRef> = {
+    data: 'Hello, World!',
+    width: '400px',
+    height: '400px',
+    minWidth: '20%',
+    minHeight: '20%',
+    maxWidth: '80vw',
+    maxHeight: '80vh',
+    hasBackdrop: false,
+    disableClose: false,
+  };
 
   apps: AppItem[] = [
     {
       component: DialogWrapperComponent,
       name: '1',
       color: '#ff605c',
-      data: '',
+      config: this.dialogConfig,
     },
     {
       component: DialogWrapperComponent,
       name: '2',
       color: '#ffbd44',
-      data: '',
+      config: this.dialogConfig,
     },
     {
       component: DialogWrapperComponent,
       name: '3',
       color: '#00ca4e',
-      data: '',
+      config: this.dialogConfig,
     },
     {
       component: DialogWrapperComponent,
       name: '4',
       color: '#0043ff',
-      data: '',
+      config: this.dialogConfig,
     },
     {
       component: DialogWrapperComponent,
       name: '5',
       color: '#8a03c4',
-      data: '',
+      config: this.dialogConfig,
     },
     {
       component: SettingsComponent,
       name: 'settings',
       color: '#e1dfe1',
-      data: '',
+      config: this.dialogConfig,
     },
   ];
-
-  ngOnInit(): void {}
 
   openDialog(app: AppItem) {
     if (app.active) return;
 
     const dialog = this.rndDialog.open(app.component, {
-      hasBackdrop: false,
+      ...this.dialogConfig,
       data: app,
     });
     dialog.closed.subscribe(v => {

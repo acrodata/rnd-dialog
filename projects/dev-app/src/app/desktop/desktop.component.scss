@@ -9,23 +9,46 @@
   align-items: center;
   height: 24px;
   padding: 0 16px;
-  background-color: rgba(0, 0, 0, .24);
-  backdrop-filter: blur(50px);
-  color: white;
-  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.48);
+  backdrop-filter: blur(100px);
+  font-size: 13px;
+}
 
-  a {
-    display: inline-flex;
-    align-items: center;
-    gap: 16px;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-  }
+.menu-group {
+  display: flex;
+  gap: 16px;
+  height: 100%;
+}
+
+.menu-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.8);
+  text-decoration: none;
+  font-weight: 600;
+  background: none;
+  border: none;
+  outline: none;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:focus,
+  &:active {
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, 0);
+      display: block;
+      height: 100%;
+      width: 150%;
+      background-color: rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+    }
   }
 }
 
@@ -41,14 +64,14 @@
   z-index: 2000;
   display: flex;
   gap: 8px;
-  height: 54px;
-  padding: 6px 8px 10px;
-  background-color: rgba(255, 255, 255, .32);
+  height: 53px;
+  padding: 6px 8px 9px;
+  background-color: rgba(255, 255, 255, 0.32);
   backdrop-filter: blur(16px);
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, .24);
+  border: 1px solid rgba(255, 255, 255, 0.24);
   transform: translate(-50%, 0);
-  box-shadow: 0 0 10px 4px rgba(0, 0, 0, .12);
+  box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.12);
 }
 
 .app {
@@ -58,6 +81,7 @@
   background-color: white;
   border-radius: 8px;
   border: none;
+  outline: none;
 
   &::before {
     content: '';
@@ -68,9 +92,10 @@
     border-radius: 8px;
   }
 
+  &:focus,
   &:active {
     &::before {
-      background-color: rgba(0, 0, 0, .24);
+      background-color: rgba(0, 0, 0, 0.24);
     }
   }
 
@@ -80,11 +105,11 @@
       position: absolute;
       left: 50%;
       bottom: -8px;
+      transform: translate(-50%, 0);
       width: 4px;
       height: 4px;
       background-color: black;
       border-radius: 50%;
-      transform: translate(-50%, 0);
     }
   }
 }
