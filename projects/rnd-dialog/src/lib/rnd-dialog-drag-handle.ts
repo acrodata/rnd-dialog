@@ -1,5 +1,5 @@
 import { DialogRef } from '@angular/cdk/dialog';
-import { AfterViewInit, Directive, ElementRef, HostListener, inject } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, inject } from '@angular/core';
 import { OnEvent } from '@scena/event-emitter';
 import Gesto, { OnDrag } from 'gesto';
 import { RndDialogContainer } from './rnd-dialog-container';
@@ -8,7 +8,10 @@ import { RndDialogContainer } from './rnd-dialog-container';
   selector: '[rnd-dialog-drag-handle], [rndDialogDragHandle]',
   exportAs: 'rndDialogDragHandle',
   standalone: true,
-  host: {},
+  host: {
+    '(mousedown)': 'onDragStart($event)',
+    '(touchstart)': 'onDragStart($event)',
+  },
 })
 export class RndDialogDragHandle implements AfterViewInit {
   private dialogRef = inject(DialogRef);
@@ -29,8 +32,7 @@ export class RndDialogDragHandle implements AfterViewInit {
     this.gesto = new Gesto(this.elementRef.nativeElement, {});
   }
 
-  @HostListener('mousedown', ['$event'])
-  onMousedown(e: MouseEvent) {
+  onDragStart(e: MouseEvent | TouchEvent) {
     this.x = this.containerInstance.x;
     this.y = this.containerInstance.y;
 

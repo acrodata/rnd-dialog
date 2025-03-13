@@ -117,7 +117,7 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     this.overlayElement.removeAttribute('style');
   }
 
-  onMousedown(e: MouseEvent, dir: resizableHandleDir) {
+  onResizeStart(e: MouseEvent | TouchEvent, dir: resizableHandleDir) {
     this.dir = dir;
 
     this.startW = this.w;
@@ -128,10 +128,10 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     this.restrictX = this.x + this.w - this.minW;
     this.restrictY = this.y + this.h - this.minH;
 
-    this.gesto?.on('drag', this.onDrag).on('dragEnd', this.onDragEnd);
+    this.gesto?.on('drag', this.onResize).on('dragEnd', this.onResizeEnd);
   }
 
-  onDrag = (e: OnEvent<OnDrag<Gesto>, Gesto>) => {
+  onResize = (e: OnEvent<OnDrag<Gesto>, Gesto>) => {
     // e 方向的宽度
     const eW = Math.min(
       Math.max(this.startW + e.distX, this.minW),
@@ -207,8 +207,8 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     }
   };
 
-  onDragEnd = (e: OnEvent<OnDrag<Gesto>, Gesto>) => {
-    this.gesto?.off('drag', this.onDrag);
+  onResizeEnd = (e: OnEvent<OnDrag<Gesto>, Gesto>) => {
+    this.gesto?.off('drag', this.onResize);
   };
 
   setActive() {
