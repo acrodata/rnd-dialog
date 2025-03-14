@@ -38,37 +38,37 @@ export class DesktopComponent {
   apps: AppItem[] = [
     {
       component: DialogWrapperComponent,
-      name: '1',
+      name: 'Demo 1',
       color: '#ff605c',
       config: this.dialogConfig,
     },
     {
       component: DialogWrapperComponent,
-      name: '2',
+      name: 'Demo 2',
       color: '#ffbd44',
       config: this.dialogConfig,
     },
     {
       component: DialogWrapperComponent,
-      name: '3',
+      name: 'Demo 3',
       color: '#00ca4e',
       config: this.dialogConfig,
     },
     {
       component: DialogWrapperComponent,
-      name: '4',
+      name: 'Demo 4',
       color: '#0043ff',
       config: this.dialogConfig,
     },
     {
       component: DialogWrapperComponent,
-      name: '5',
+      name: 'Demo 5',
       color: '#8a03c4',
       config: this.dialogConfig,
     },
     {
       component: SettingsComponent,
-      name: 'settings',
+      name: 'Settings',
       color: '#e1dfe1',
       config: this.dialogConfig,
     },

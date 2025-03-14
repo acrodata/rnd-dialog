@@ -17,12 +17,15 @@
 <div class="dock">
   @for (app of apps; track $index) {
     <button
-      class="app"
+      class="app-btn"
       [class.active]="app.active"
       [style.background-color]="app.color"
       (click)="openDialog(app)"
     >
-      <!--  -->
+      <div class="tooltip">{{ app.name }}</div>
+      <div class="focus-indicator"></div>
+      <div class="active-indicator"></div>
+      <div class="touch-target"></div>
     </button>
   }
 </div>

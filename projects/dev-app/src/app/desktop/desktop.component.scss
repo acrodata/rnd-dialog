@@ -16,7 +16,7 @@
 
 .menu-group {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   height: 100%;
 }
 
@@ -26,7 +26,7 @@
   align-items: center;
   color: rgba(0, 0, 0, 0.8);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   background: none;
   border: none;
   outline: none;
@@ -62,19 +62,19 @@
   left: 50%;
   bottom: 5px;
   z-index: 2000;
+  transform: translate(-50%, 0);
   display: flex;
-  gap: 8px;
+  gap: 10px;
   height: 53px;
   padding: 6px 8px 9px;
   background-color: rgba(255, 255, 255, 0.32);
   backdrop-filter: blur(16px);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.24);
-  transform: translate(-50%, 0);
   box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.12);
 }
 
-.app {
+.app-btn {
   position: relative;
   width: 36px;
   height: 36px;
@@ -83,33 +83,77 @@
   border: none;
   outline: none;
 
-  &::before {
-    content: '';
-    display: block;
+  .focus-indicator {
     position: absolute;
     inset: 0;
     background-color: transparent;
     border-radius: 8px;
   }
 
+  &:hover {
+    .tooltip {
+      opacity: 1;
+    }
+  }
+
   &:focus,
   &:active {
-    &::before {
+    .focus-indicator {
       background-color: rgba(0, 0, 0, 0.24);
     }
   }
 
   &.active {
-    &::after {
-      content: '';
+    .active-indicator {
       position: absolute;
-      left: 50%;
       bottom: -8px;
+      left: 50%;
       transform: translate(-50%, 0);
       width: 4px;
       height: 4px;
       background-color: black;
       border-radius: 50%;
     }
+  }
+
+  .touch-target {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 60px;
+  }
+}
+
+.tooltip {
+  --tooltip-bg-color: rgba(255, 255, 255, 0.56);
+  --tooltip-backdrop-filter: blur(50px);
+
+  position: absolute;
+  padding: 6px 12px;
+  top: -48px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: var(--tooltip-bg-color);
+  backdrop-filter: var(--tooltip-backdrop-filter);
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.24));
+  border-radius: 4px;
+  white-space: nowrap;
+  line-height: 1;
+  pointer-events: none;
+  opacity: 0;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -14px;
+    transform: translate(-50%, 0);
+    width: 1px;
+    border: 6px solid transparent;
+    border-top-color: var(--tooltip-bg-color);
+    backdrop-filter: var(--tooltip-backdrop-filter);
+    border-top-width: 8px;
   }
 }

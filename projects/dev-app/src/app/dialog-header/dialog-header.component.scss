@@ -3,15 +3,16 @@
   justify-content: space-between;
   align-items: center;
   padding: 7px 10px;
-  background-color: rgb(233, 230, 234);
+  background-color: rgb(0, 0, 0, .08);
   line-height: 1;
   cursor: default;
-  border-radius: 10px 10px 0 0;
+  border-radius: var(--rnd-dialog-container-shape) var(--rnd-dialog-container-shape) 0 0;
 }
 
 .title {
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.8);
 }
 
 .close-btn {
@@ -22,16 +23,15 @@
   border: none;
   border-radius: 50%;
   outline: none;
+  line-height: 10px;
 
   &::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    display: inline-block;
     width: 100%;
     height: 100%;
-    line-height: 13px;
   }
 
   &:hover,
