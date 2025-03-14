@@ -3,7 +3,6 @@
 @for (dir of handleDirs; track dir) {
   <div
     class="resizable-handle resizable-handle-{{ dir }}"
-    (mousedown)="onResizeStart($event, dir)"
-    (touchstart)="onResizeStart($event, dir)"
+    (pointerdown)="onResizeStart($event, dir)"
   ></div>
 }

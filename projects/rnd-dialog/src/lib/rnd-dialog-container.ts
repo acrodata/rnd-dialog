@@ -36,7 +36,7 @@ type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
     '[style.width.px]': 'w',
     '[style.height.px]': 'h',
     '[class.active]': 'isActive',
-    '(mousedown)': 'setActive()',
+    '(pointerdown)': 'setActive()',
   },
 })
 export class RndDialogContainer extends CdkDialogContainer implements OnInit, AfterViewInit {

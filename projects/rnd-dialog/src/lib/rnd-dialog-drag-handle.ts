@@ -9,8 +9,7 @@ import { RndDialogContainer } from './rnd-dialog-container';
   exportAs: 'rndDialogDragHandle',
   standalone: true,
   host: {
-    '(mousedown)': 'onDragStart($event)',
-    '(touchstart)': 'onDragStart($event)',
+    '(pointerdown)': 'onDragStart($event)',
   },
 })
 export class RndDialogDragHandle implements AfterViewInit {
