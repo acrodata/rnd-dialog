@@ -2,4 +2,11 @@
 
 <app-dialog-content>
   <gui-form [config]="config" [model]="model" />
+
+  <div class="btns">
+    <button class="os-btn" (click)="dialogRef.close()">Close</button>
+    <a class="os-btn btn-primary" href="https://github.com/acrodata/rnd-dialog" target="_blank">
+      Github
+    </a>
+  </div>
 </app-dialog-content>

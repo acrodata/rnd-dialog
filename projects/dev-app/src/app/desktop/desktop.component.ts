@@ -1,7 +1,7 @@
 import { RndDialog } from '@acrodata/rnd-dialog';
 import { DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { DialogWrapperComponent } from '../dialog-wrapper/dialog-wrapper.component';
 import { SettingsComponent } from '../settings/settings.component';
 
@@ -19,6 +19,10 @@ export interface AppItem {
   imports: [],
   templateUrl: './desktop.component.html',
   styleUrl: './desktop.component.scss',
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    class: 'os-desktop',
+  },
 })
 export class DesktopComponent {
   private rndDialog = inject(RndDialog);

@@ -1,10 +1,10 @@
-:host {
+.os-desktop {
   display: block;
   height: 100vh;
   background: url('/images/sequoia-light.jpg') center/cover;
 }
 
-.menu-toolbar {
+.os-toolbar {
   display: flex;
   align-items: center;
   height: 24px;
@@ -14,13 +14,13 @@
   font-size: 13px;
 }
 
-.menu-group {
+.os-menu-group {
   display: flex;
   gap: 12px;
   height: 100%;
 }
 
-.menu-item {
+.os-menu-item {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -52,12 +52,12 @@
   }
 }
 
-.desktop {
+main {
   position: relative;
   height: calc(100vh - 24px);
 }
 
-.dock {
+.os-dock {
   position: absolute;
   left: 50%;
   bottom: 5px;
@@ -74,7 +74,7 @@
   box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.12);
 }
 
-.app-btn {
+.os-app {
   position: relative;
   width: 36px;
   height: 36px;
@@ -91,7 +91,7 @@
   }
 
   &:hover {
-    .tooltip {
+    .os-dock-tooltip {
       opacity: 1;
     }
   }
@@ -126,7 +126,7 @@
   }
 }
 
-.tooltip {
+.os-dock-tooltip {
   --tooltip-bg-color: rgba(255, 255, 255, 0.56);
   --tooltip-backdrop-filter: blur(50px);
 
@@ -143,6 +143,7 @@
   line-height: 1;
   pointer-events: none;
   opacity: 0;
+  font-weight: 300;
 
   &::after {
     content: '';
@@ -155,5 +156,41 @@
     border-top-color: var(--tooltip-bg-color);
     backdrop-filter: var(--tooltip-backdrop-filter);
     border-top-width: 8px;
+  }
+}
+
+.os-btn {
+  position: relative;
+  min-width: 72px;
+  padding: 2px 8px;
+  border: none;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 1px rgba(255, 255, 255, 0.32),
+    0 0 1px rgba(0, 0, 0, 0.32),
+    0 1px 1px 0 rgba(0, 0, 0, 0.24);
+  text-decoration: none;
+  text-align: center;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: transparent;
+    pointer-events: none;
+    border-radius: 6px;
+  }
+
+  &:active {
+    &::after {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  &.btn-primary {
+    color: white;
+    background-image: linear-gradient(#2491ff, #037aff);
+    box-shadow: 0 1px 1px #0052ae;
   }
 }

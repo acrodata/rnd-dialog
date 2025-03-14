@@ -2,15 +2,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 7px 10px;
+  padding: 6px 10px;
   background-color: rgb(0, 0, 0, .08);
-  line-height: 1;
+  line-height: 16px;
   cursor: default;
-  border-radius: var(--rnd-dialog-container-shape) var(--rnd-dialog-container-shape) 0 0;
+  border-radius: 12px 12px 0 0;
 }
 
 .title {
-  font-size: 14px;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.8);
 }

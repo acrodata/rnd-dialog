@@ -1,6 +1,6 @@
 import { GuiFields, GuiModule } from '@acrodata/gui';
 import { RndDialogDragHandle } from '@acrodata/rnd-dialog';
-import { DIALOG_DATA, DialogConfig, DialogRef } from '@angular/cdk/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppItem } from '../desktop/desktop.component';
@@ -21,6 +21,7 @@ import { DialogHeaderComponent } from '../dialog-header/dialog-header.component'
   styleUrl: './settings.component.scss',
 })
 export class SettingsComponent {
+  dialogRef = inject(DialogRef);
   data = inject<AppItem>(DIALOG_DATA);
 
   config: GuiFields = {

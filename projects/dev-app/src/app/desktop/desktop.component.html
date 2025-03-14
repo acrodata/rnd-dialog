@@ -1,6 +1,6 @@
-<div class="menu-toolbar">
-  <div class="menu-group">
-    <button class="menu-item">
+<div class="os-toolbar">
+  <div class="os-menu-group">
+    <button class="os-menu-item">
       <svg viewBox="0 0 24 24">
         <path
           fill="currentColor"
@@ -8,21 +8,23 @@
         />
       </svg>
     </button>
-    <a class="menu-item" href="https://github.com/acrodata/rnd-dialog" target="_blank">RndDialog</a>
+    <a class="os-menu-item" href="https://github.com/acrodata/rnd-dialog" target="_blank">
+      RndDialog
+    </a>
   </div>
 </div>
 
-<div class="desktop"></div>
+<main></main>
 
-<div class="dock">
+<div class="os-dock">
   @for (app of apps; track $index) {
     <button
-      class="app-btn"
+      class="os-app"
       [class.active]="app.active"
       [style.background-color]="app.color"
       (click)="openDialog(app)"
     >
-      <div class="tooltip">{{ app.name }}</div>
+      <div class="os-dock-tooltip">{{ app.name }}</div>
       <div class="focus-indicator"></div>
       <div class="active-indicator"></div>
       <div class="touch-target"></div>
