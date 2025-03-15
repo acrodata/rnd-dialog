@@ -2,6 +2,8 @@ import { RndDialog } from '@acrodata/rnd-dialog';
 import { DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { format } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
 import { DialogWrapperComponent } from '../dialog-wrapper/dialog-wrapper.component';
 import { SettingsComponent } from '../settings/settings.component';
 
@@ -78,8 +80,12 @@ export class DesktopComponent implements OnInit {
     },
   ];
 
+  currentDatetime = '';
+
   ngOnInit(): void {
     this.openDialog(this.apps[this.apps.length - 1]);
+
+    this.getCurrentDatetime();
   }
 
   openDialog(app: AppItem) {
@@ -94,5 +100,13 @@ export class DesktopComponent implements OnInit {
     });
 
     app.active = true;
+  }
+
+  getCurrentDatetime() {
+    setInterval(() => {
+      this.currentDatetime = format(Date.now(), 'MMM do EEE HH:mm', {
+        locale: zhCN,
+      });
+    }, 1000);
   }
 }
