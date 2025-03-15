@@ -3,6 +3,8 @@
 [![npm](https://img.shields.io/npm/v/@acrodata/rnd-dialog.svg)](https://www.npmjs.com/package/@acrodata/rnd-dialog)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/acrodata/rnd-dialog/blob/main/LICENSE)
 
+![screenshot](https://repository-images.githubusercontent.com/937415128/066bb68f-6707-4a8a-a374-8ca21323cfff)
+
 Resizable and draggable dialog based on CDK dialog.
 
 #### Quick links
