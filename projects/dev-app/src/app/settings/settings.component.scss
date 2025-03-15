@@ -1,17 +1,6 @@
-:host ::ng-deep {
-  .gui-form {
-    margin-top: 16px;
-  }
-
-  .gui-field-label {
-    width: 30%;
-  }
-}
-
 .btns {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
   padding: 0 12px;
-  margin-top: 16px;
 }

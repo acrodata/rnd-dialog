@@ -19,8 +19,16 @@ body {
     "Noto Color Emoji";
 }
 
-button,
-a {
+a,
+button {
   font-family: inherit;
   font-weight: inherit;
+}
+
+.gui-form {
+  margin: 16px 0;
+
+  .gui-field-label {
+    width: 30%;
+  }
 }

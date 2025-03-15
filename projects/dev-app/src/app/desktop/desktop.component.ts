@@ -1,7 +1,7 @@
 import { RndDialog } from '@acrodata/rnd-dialog';
 import { DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { DialogWrapperComponent } from '../dialog-wrapper/dialog-wrapper.component';
 import { SettingsComponent } from '../settings/settings.component';
 
@@ -24,7 +24,7 @@ export interface AppItem {
     class: 'os-desktop',
   },
 })
-export class DesktopComponent {
+export class DesktopComponent implements OnInit {
   private rndDialog = inject(RndDialog);
 
   dialogConfig: DialogConfig<any, DialogRef> = {
@@ -77,6 +77,10 @@ export class DesktopComponent {
       config: this.dialogConfig,
     },
   ];
+
+  ngOnInit(): void {
+    this.openDialog(this.apps[this.apps.length - 1]);
+  }
 
   openDialog(app: AppItem) {
     if (app.active) return;
