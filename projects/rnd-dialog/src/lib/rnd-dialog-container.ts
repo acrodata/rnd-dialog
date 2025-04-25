@@ -62,8 +62,6 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   minH = 200;
   maxW = Infinity;
   maxH = Infinity;
-  windowW = window.innerWidth;
-  windowH = window.innerHeight;
 
   w = 400;
   h = 400;
@@ -100,8 +98,8 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     this.h = this.overlayElement.offsetHeight || 400;
 
     // 弹窗初始化居中
-    this.x = (this.windowW - this.w) / 2;
-    this.y = (this.windowH - this.h) / 2;
+    this.x = (window.innerWidth - this.w) / 2;
+    this.y = (window.innerHeight - this.h) / 2;
 
     this.setActive();
   }
@@ -136,13 +134,13 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     const eW = Math.min(
       Math.max(this.startW + e.distX, this.minW),
       this.maxW,
-      this.windowW - this.startX
+      window.innerWidth - this.startX
     );
     // s 方向的高度
     const sH = Math.min(
       Math.max(this.startH + e.distY, this.minH),
       this.maxH,
-      this.windowH - this.startY
+      window.innerHeight - this.startY
     );
     // w 方向的宽度
     const wW = Math.min(
