@@ -117,7 +117,7 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     this.overlayElement.removeAttribute('style');
   }
 
-  onResizeStart(e: MouseEvent | TouchEvent, dir: resizableHandleDir) {
+  onResizeStart(e: PointerEvent, dir: resizableHandleDir) {
     this.dir = dir;
 
     this.startW = this.w;

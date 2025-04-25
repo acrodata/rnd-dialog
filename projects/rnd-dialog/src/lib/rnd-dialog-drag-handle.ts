@@ -31,7 +31,13 @@ export class RndDialogDragHandle implements AfterViewInit {
     this.gesto = new Gesto(this.elementRef.nativeElement, {});
   }
 
-  onDragStart(e: MouseEvent | TouchEvent) {
+  onDragStart(e: PointerEvent) {
+    const target = e.target as HTMLElement;
+    const tagName = target.tagName.toLowerCase();
+    if (tagName === 'button') {
+      return;
+    }
+
     this.x = this.containerInstance.x;
     this.y = this.containerInstance.y;
 
