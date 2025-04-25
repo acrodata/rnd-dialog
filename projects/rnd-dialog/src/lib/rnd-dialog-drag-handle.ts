@@ -32,9 +32,9 @@ export class RndDialogDragHandle implements AfterViewInit {
   }
 
   onDragStart(e: PointerEvent) {
+    // 当点击按钮时禁止拖拽
     const target = e.target as HTMLElement;
-    const tagName = target.tagName.toLowerCase();
-    if (tagName === 'button') {
+    if (target.closest('button')) {
       return;
     }
 
