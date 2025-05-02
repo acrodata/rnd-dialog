@@ -1,0 +1,36 @@
+<button mat-button (click)="openDialog(dialogTpl)">Open</button>
+
+<ng-template #dialogTpl let-data let-dialogRef="dialogRef">
+  <h2 mat-dialog-title>
+    Hi
+    <button mat-button (click)="dialogRef.close()">close</button>
+  </h2>
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Favorite food</mat-label>
+      <mat-select>
+        @for (food of foods; track food) {
+          <mat-option [value]="food.value">{{ food.viewValue }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>Item 1</button>
+      <button mat-menu-item>Item 2</button>
+    </mat-menu>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="openRndDialog(dialogTpl2)">Open</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #dialogTpl2 let-data let-dialogRef="dialogRef">
+  <div rndDialogDragHandle>
+    Hi
+    <button mat-button (click)="dialogRef.close()">close</button>
+  </div>
+
+  <button mat-button (click)="openRndDialog(dialogTpl2)">Open</button>
+</ng-template>
