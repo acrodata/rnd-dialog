@@ -234,8 +234,10 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   }
 
   getSortedDialogs() {
-    return [...this.dialog.openDialogs].sort(
-      (a, b) => +a.overlayRef.hostElement.style.zIndex - +b.overlayRef.hostElement.style.zIndex
-    );
+    return [...this.dialog.openDialogs]
+      .filter(ref => (ref.containerInstance as any).resizeHandleElements)
+      .sort(
+        (a, b) => +a.overlayRef.hostElement.style.zIndex - +b.overlayRef.hostElement.style.zIndex
+      );
   }
 }
