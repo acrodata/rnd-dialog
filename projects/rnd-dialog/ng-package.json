@@ -3,8 +3,5 @@
   "dest": "../../dist/rnd-dialog",
   "lib": {
     "entryFile": "src/public-api.ts"
-  },
-  "allowedNonPeerDependencies": [
-    "gesto"
-  ]
+  }
 }

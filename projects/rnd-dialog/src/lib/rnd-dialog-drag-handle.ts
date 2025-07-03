@@ -1,7 +1,6 @@
 import { DialogRef } from '@angular/cdk/dialog';
-import { AfterViewInit, Directive, ElementRef, inject } from '@angular/core';
-import { OnEvent } from '@scena/event-emitter';
-import Gesto, { OnDrag } from 'gesto';
+import { DOCUMENT } from '@angular/common';
+import { Directive, inject } from '@angular/core';
 import { RndDialogContainer } from './rnd-dialog-container';
 
 @Directive({
@@ -12,11 +11,9 @@ import { RndDialogContainer } from './rnd-dialog-container';
     '(pointerdown)': 'onDragStart($event)',
   },
 })
-export class RndDialogDragHandle implements AfterViewInit {
+export class RndDialogDragHandle {
   private dialogRef = inject(DialogRef);
-  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-
-  private gesto?: Gesto;
+  private document = inject(DOCUMENT);
 
   isDragging = false;
 
@@ -27,12 +24,13 @@ export class RndDialogDragHandle implements AfterViewInit {
   x = this.containerInstance.x;
   y = this.containerInstance.y;
 
-  ngAfterViewInit(): void {
-    this.gesto = new Gesto(this.elementRef.nativeElement, {});
-  }
+  pointerStartX = 0;
+  pointerStartY = 0;
 
   onDragStart(e: PointerEvent) {
-    // 当点击按钮时禁止拖拽
+    e.preventDefault();
+
+    // Stop dragging when click the button
     const target = e.target as HTMLElement;
     if (target.closest('button')) {
       return;
@@ -41,17 +39,30 @@ export class RndDialogDragHandle implements AfterViewInit {
     this.x = this.containerInstance.x;
     this.y = this.containerInstance.y;
 
-    this.gesto?.on('drag', this.onDrag).on('dragEnd', this.onDragEnd);
+    this.pointerStartX = e.clientX;
+    this.pointerStartY = e.clientY;
+
+    this.document.addEventListener('pointermove', this.onDrag, { passive: false });
+    this.document.addEventListener('pointerup', this.onDragEnd, { passive: false });
   }
 
-  onDrag = (e: OnEvent<OnDrag<Gesto>, Gesto>) => {
+  onDrag = (e: PointerEvent) => {
+    e.preventDefault();
+
     this.isDragging = true;
-    this.containerInstance.x = this.x + e.distX;
-    this.containerInstance.y = Math.max(0, this.y + e.distY); // 向上拖拽不能超出屏幕，参考 Mac 窗口行为
+
+    const distX = e.clientX - this.pointerStartX;
+    const distY = e.clientY - this.pointerStartY;
+
+    this.containerInstance.x = this.x + distX;
+    // Dragging upward cannot exceed the top of the screen, following Mac window behavior
+    this.containerInstance.y = Math.max(0, this.y + distY);
   };
 
-  onDragEnd = (e: OnEvent<OnDrag<Gesto>, Gesto>) => {
+  onDragEnd = (e: PointerEvent) => {
     this.isDragging = false;
-    this.gesto?.off('drag', this.onDrag);
+
+    this.document.removeEventListener('pointermove', this.onDrag);
+    this.document.removeEventListener('pointerup', this.onDragEnd);
   };
 }

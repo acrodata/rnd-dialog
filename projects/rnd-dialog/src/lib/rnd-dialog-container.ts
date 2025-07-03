@@ -1,5 +1,6 @@
 import { CdkDialogContainer, Dialog, DialogRef } from '@angular/cdk/dialog';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
+import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -8,8 +9,6 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { OnEvent } from '@scena/event-emitter';
-import Gesto, { OnDrag } from 'gesto';
 import { getElementSize } from './utils';
 
 type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
@@ -42,7 +41,7 @@ type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
 export class RndDialogContainer extends CdkDialogContainer implements OnInit, AfterViewInit {
   private dialog = inject(Dialog);
   private dialogRef = inject(DialogRef);
-  private gesto?: Gesto;
+  private document = inject(DOCUMENT);
 
   get containerElement() {
     return this._elementRef.nativeElement as HTMLElement;
@@ -68,17 +67,19 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   x = 0;
   y = 0;
 
-  // 保存拖动时的初始尺寸和位置
+  // Save the initial size and position before dragging
   startW = 0;
   startH = 0;
   startX = 0;
   startY = 0;
 
-  // n 方向和 w 方向的限制坐标
+  // Restriction coordinates for the n and w
   restrictX = 0;
   restrictY = 0;
 
-  resizeHandleElements: HTMLElement[] = [];
+  // The coordinates when the mouse is pressed down
+  pointerStartX = 0;
+  pointerStartY = 0;
 
   defaultZIndex = 1000;
 
@@ -93,11 +94,11 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     this.maxW = maxSize.w || Infinity;
     this.maxH = maxSize.h || Infinity;
 
-    // 获取非 px 单位的尺寸信息
+    // Get size information in units other than px
     this.w = this.overlayElement.offsetWidth || 400;
     this.h = this.overlayElement.offsetHeight || 400;
 
-    // 弹窗初始化居中
+    // Center the dialog
     this.x = (window.innerWidth - this.w) / 2;
     this.y = (window.innerHeight - this.h) / 2;
 
@@ -105,17 +106,13 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   }
 
   ngAfterViewInit(): void {
-    this.resizeHandleElements = Array.from(
-      this.containerElement.querySelectorAll('.resizable-handle')
-    );
-
-    this.gesto = new Gesto(this.resizeHandleElements, {});
-
-    // 移除 cdk-overlay-pane 的尺寸样式
+    // Remove cdk-overlay-pane's styles
     this.overlayElement.removeAttribute('style');
   }
 
   onResizeStart(e: PointerEvent, dir: resizableHandleDir) {
+    e.preventDefault();
+
     this.dir = dir;
 
     this.startW = this.w;
@@ -126,43 +123,52 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     this.restrictX = this.x + this.w - this.minW;
     this.restrictY = this.y + this.h - this.minH;
 
-    this.gesto?.on('drag', this.onResize).on('dragEnd', this.onResizeEnd);
+    this.pointerStartX = e.clientX;
+    this.pointerStartY = e.clientY;
+
+    this.document.addEventListener('pointermove', this.onResize, { passive: false });
+    this.document.addEventListener('pointerup', this.onResizeEnd, { passive: false });
   }
 
-  onResize = (e: OnEvent<OnDrag<Gesto>, Gesto>) => {
-    // e 方向的宽度
+  onResize = (e: PointerEvent) => {
+    e.preventDefault();
+
+    const distX = e.clientX - this.pointerStartX;
+    const distY = e.clientY - this.pointerStartY;
+
+    // e width
     const eW = Math.min(
-      Math.max(this.startW + e.distX, this.minW),
+      Math.max(this.startW + distX, this.minW),
       this.maxW,
       window.innerWidth - this.startX
     );
-    // s 方向的高度
+    // s height
     const sH = Math.min(
-      Math.max(this.startH + e.distY, this.minH),
+      Math.max(this.startH + distY, this.minH),
       this.maxH,
       window.innerHeight - this.startY
     );
-    // w 方向的宽度
+    // w width
     const wW = Math.min(
-      Math.max(this.startW - e.distX, this.minW),
+      Math.max(this.startW - distX, this.minW),
       this.maxW,
       this.startW + this.startX
     );
-    // n 方向的高度
+    // n height
     const nH = Math.min(
-      Math.max(this.startH - e.distY, this.minH),
+      Math.max(this.startH - distY, this.minH),
       this.maxH,
       this.startH + this.startY
     );
-    // w 方向的 x 坐标，不能超出屏幕，参考 Mac 窗口行为
+    // The x coord cannot exceed the screen boundary, following Mac window behavior
     const wX = Math.max(
-      this.startW - e.distX > this.minW ? this.startX + e.distX : this.restrictX,
+      this.startW - distX > this.minW ? this.startX + distX : this.restrictX,
       this.startX + this.startW - this.maxW,
       0
     );
-    // n 方向的 y 坐标，不能超出屏幕，参考 Mac 窗口行为
+    // The y coord cannot exceed the screen boundary, following Mac window behavior
     const nY = Math.max(
-      this.startH - e.distY > this.minH ? this.startY + e.distY : this.restrictY,
+      this.startH - distY > this.minH ? this.startY + distY : this.restrictY,
       this.startY + this.startH - this.maxH,
       0
     );
@@ -205,21 +211,22 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     }
   };
 
-  onResizeEnd = (e: OnEvent<OnDrag<Gesto>, Gesto>) => {
-    this.gesto?.off('drag', this.onResize);
+  onResizeEnd = (e: PointerEvent) => {
+    this.document.removeEventListener('pointermove', this.onResize);
+    this.document.removeEventListener('pointerup', this.onResizeEnd);
   };
 
   setActive() {
-    // 先根据元素的 z-index 排序获得实例的顺序列表
+    // First, get a list of instances sorted by the element's z-index
     const openDialogRefs = this.getSortedDialogs();
-    // 将激活的窗口移到数组的末尾
+    // Move the active dialog to the end of the array
     const index = openDialogRefs.indexOf(this.dialogRef);
     openDialogRefs.splice(index, 1);
     openDialogRefs.push(this.dialogRef);
-    // 按照数组顺序设置新的 z-index
+    // Set new z-index values according to the order in the array
     openDialogRefs.forEach((ref, index) => {
       ref.overlayRef.hostElement.style.zIndex = this.defaultZIndex + 1 + index + '';
-      // 如果显示遮罩，则遮罩也要设置 z-index
+      // If a backdrop is shown, its z-index should also be set
       if (ref.overlayRef.backdropElement) {
         ref.overlayRef.backdropElement.style.zIndex = this.defaultZIndex + 1 + index + '';
       }
@@ -235,7 +242,7 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
 
   getSortedDialogs() {
     return [...this.dialog.openDialogs]
-      .filter(ref => (ref.containerInstance as any).resizeHandleElements)
+      .filter(ref => (ref.containerInstance as RndDialogContainer).handleDirs)
       .sort(
         (a, b) => +a.overlayRef.hostElement.style.zIndex - +b.overlayRef.hostElement.style.zIndex
       );

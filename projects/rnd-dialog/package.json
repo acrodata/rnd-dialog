@@ -23,7 +23,6 @@
     "@angular/core": ">=16.0.0"
   },
   "dependencies": {
-    "gesto": "^1.19.4",
     "tslib": "^2.3.0"
   },
   "sideEffects": false
