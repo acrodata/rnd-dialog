@@ -6,4 +6,5 @@ export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: DesktopComponent },
   { path: 'examples', component: ExamplesComponent },
+  { path: '**', redirectTo: 'home' },
 ];
