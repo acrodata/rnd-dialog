@@ -4,12 +4,14 @@ import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   inject,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
 import { getElementSize } from './utils';
+import { RndDialogDragConstraints } from './rnd-dialog';
 
 type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
 
@@ -20,7 +22,7 @@ type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
   templateUrl: './rnd-dialog-container.html',
   styleUrl: './rnd-dialog-container.scss',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'class': 'rnd-dialog-container',
     'tabindex': '-1',
@@ -42,6 +44,7 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   private dialog = inject(Dialog);
   private dialogRef = inject(DialogRef);
   private document = inject(DOCUMENT);
+  private cdr = inject(ChangeDetectorRef);
 
   get containerElement() {
     return this._elementRef.nativeElement as HTMLElement;
@@ -50,6 +53,12 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   get overlayElement() {
     return this.dialogRef.overlayRef.overlayElement;
   }
+  dragConstraints: RndDialogDragConstraints = {
+    top: false,
+    right: false,
+    bottom: false,
+    left: false,
+  };
 
   isActive = true;
 
@@ -85,6 +94,11 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
 
   ngOnInit(): void {
     const { minWidth, minHeight, maxWidth, maxHeight } = this.overlayElement.style;
+
+    const config = this._config as any;
+    if (config?.data?.dragConstraints) {
+      this.dragConstraints = { ...this.dragConstraints, ...config.data.dragConstraints };
+    }
 
     const minSize = getElementSize(minWidth, minHeight);
     this.minW = minSize.w || 200;
@@ -209,6 +223,7 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
         this.y = nY;
         break;
     }
+    this.markForCheck();
   };
 
   onResizeEnd = (e: PointerEvent) => {
@@ -237,6 +252,7 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
         (ref.containerInstance as RndDialogContainer).isActive = false;
       });
       this.isActive = true;
+      this.markForCheck();
     });
   }
 
@@ -246,5 +262,9 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
       .sort(
         (a, b) => +a.overlayRef.hostElement.style.zIndex - +b.overlayRef.hostElement.style.zIndex
       );
+  }
+
+  markForCheck() {
+    this.cdr.markForCheck();
   }
 }

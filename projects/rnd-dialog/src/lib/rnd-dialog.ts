@@ -4,6 +4,17 @@ import { ComponentType } from '@angular/cdk/portal';
 import { inject, Injectable, TemplateRef } from '@angular/core';
 import { RndDialogContainer } from './rnd-dialog-container';
 
+export interface RndDialogDragConstraints {
+  /** Restrict drag up */
+  top?: boolean;
+  /** Restrict drag right */
+  right?: boolean;
+  /** Restrict drag down */
+  bottom?: boolean;
+  /** Restrict drag left */
+  left?: boolean;
+}
+
 @Injectable({ providedIn: 'root' })
 export class RndDialog {
   private dialog = inject(Dialog);

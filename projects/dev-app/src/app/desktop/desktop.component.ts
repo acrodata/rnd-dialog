@@ -1,4 +1,4 @@
-import { RndDialog } from '@acrodata/rnd-dialog';
+import { RndDialog, RndDialogDragConstraints } from '@acrodata/rnd-dialog';
 import { DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
@@ -11,7 +11,7 @@ export interface AppItem {
   component: ComponentType<any>;
   name: string;
   color: string;
-  config: DialogConfig<any, DialogRef>;
+  config: DialogConfig<any, DialogRef> & RndDialogDragConstraints;
   active?: boolean;
 }
 
@@ -31,8 +31,8 @@ export class DesktopComponent implements OnInit {
 
   dialogConfig: DialogConfig<any, DialogRef> = {
     data: 'Hello, World!',
-    width: '400px',
-    height: '400px',
+    width: '515px',
+    height: '530px',
     minWidth: '20%',
     minHeight: '20%',
     maxWidth: '80vw',
@@ -90,10 +90,17 @@ export class DesktopComponent implements OnInit {
 
   openDialog(app: AppItem) {
     if (app.active) return;
-
     const dialog = this.rndDialog.open(app.component, {
       ...this.dialogConfig,
-      data: app,
+      data: {
+        ...app,
+        dragConstraints: {
+          top: app.config.top,
+          left: app.config.left,
+          right: app.config.right,
+          bottom: app.config.bottom,
+        },
+      },
     });
     dialog.closed.subscribe(v => {
       app.active = false;
