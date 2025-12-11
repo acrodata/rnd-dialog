@@ -3,7 +3,6 @@ import { Component, inject } from '@angular/core';
 
 @Component({
   selector: 'app-dialog-header',
-  standalone: true,
   imports: [],
   templateUrl: './dialog-header.component.html',
   styleUrl: './dialog-header.component.scss',
@@ -11,7 +10,7 @@ import { Component, inject } from '@angular/core';
 export class DialogHeaderComponent {
   private dialogRef = inject(DialogRef);
 
-  close(){
+  close() {
     this.dialogRef.close();
   }
 }

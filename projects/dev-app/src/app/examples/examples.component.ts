@@ -8,7 +8,6 @@ import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-examples',
-  standalone: true,
   imports: [
     MatFormFieldModule,
     MatSelectModule,

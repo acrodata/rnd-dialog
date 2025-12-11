@@ -6,7 +6,6 @@ import { RndDialogContainer } from './rnd-dialog-container';
 @Directive({
   selector: '[rnd-dialog-drag-handle], [rndDialogDragHandle]',
   exportAs: 'rndDialogDragHandle',
-  standalone: true,
   host: {
     '(pointerdown)': 'onDragStart($event)',
   },

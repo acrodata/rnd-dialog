@@ -9,7 +9,6 @@ import { DialogHeaderComponent } from '../dialog-header/dialog-header.component'
 
 @Component({
   selector: 'app-settings',
-  standalone: true,
   imports: [
     FormsModule,
     GuiModule,

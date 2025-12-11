@@ -15,7 +15,6 @@ type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
 
 @Component({
   selector: 'rnd-dialog-container',
-  standalone: true,
   imports: [CdkPortalOutlet],
   templateUrl: './rnd-dialog-container.html',
   styleUrl: './rnd-dialog-container.scss',

@@ -17,7 +17,6 @@ export interface AppItem {
 
 @Component({
   selector: 'app-desktop',
-  standalone: true,
   imports: [],
   templateUrl: './desktop.component.html',
   styleUrl: './desktop.component.scss',

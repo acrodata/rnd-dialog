@@ -42,7 +42,6 @@ import { RndDialog, RndDialogDragHandle } from '@acrodata/rnd-dialog';
   template: `
     <button (click)="openDialog()">Open dialog</button>
   `,
-  standalone: true,
   imports: [],
 })
 export class YourAppComponent {
@@ -66,7 +65,6 @@ export class YourAppComponent {
     </div>
     <p>{{ data }}</p>
   `,
-  standalone: true,
   imports: [RndDialogDragHandle],
 })
 export class ExampleDialog {

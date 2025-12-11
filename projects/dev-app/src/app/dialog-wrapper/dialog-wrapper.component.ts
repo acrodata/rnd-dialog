@@ -7,7 +7,6 @@ import { DialogHeaderComponent } from '../dialog-header/dialog-header.component'
 
 @Component({
   selector: 'app-dialog-wrapper',
-  standalone: true,
   imports: [DialogHeaderComponent, DialogContentComponent, RndDialogDragHandle],
   templateUrl: './dialog-wrapper.component.html',
   styleUrl: './dialog-wrapper.component.scss',
