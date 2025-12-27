@@ -53,9 +53,34 @@ export class RndDialogDragHandle {
     const distX = e.clientX - this.pointerStartX;
     const distY = e.clientY - this.pointerStartY;
 
-    this.containerInstance.x = this.x + distX;
-    // Dragging upward cannot exceed the top of the screen, following Mac window behavior
-    this.containerInstance.y = Math.max(0, this.y + distY);
+    const container = this.containerInstance;
+    const constraints = container.dragConstraints;
+
+    // Calculate new position
+    let newX = this.x + distX;
+    let newY = this.y + distY;
+
+    // Apply drag constraints
+    if (constraints.left) {
+      newX = Math.max(0, newX);
+    }
+    if (constraints.right) {
+      newX = Math.min(window.innerWidth - container.w, newX);
+    }
+    if (constraints.top) {
+      newY = Math.max(0, newY);
+    }
+    if (constraints.bottom) {
+      newY = Math.min(window.innerHeight - container.h, newY);
+    }
+
+    // Update the container position
+    container.x = newX;
+    container.y = newY;
+
+    // Update DOM position
+    container.containerElement.style.left = `${newX}px`;
+    container.containerElement.style.top = `${newY}px`;
   };
 
   onDragEnd = (e: PointerEvent) => {
