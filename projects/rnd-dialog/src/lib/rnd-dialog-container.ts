@@ -1,10 +1,10 @@
 import { CdkDialogContainer, Dialog, DialogRef } from '@angular/cdk/dialog';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  DOCUMENT,
   inject,
   OnInit,
   ViewEncapsulation,

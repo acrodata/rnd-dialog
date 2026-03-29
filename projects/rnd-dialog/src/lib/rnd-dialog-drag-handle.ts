@@ -1,6 +1,5 @@
 import { DialogRef } from '@angular/cdk/dialog';
-import { DOCUMENT } from '@angular/common';
-import { Directive, inject } from '@angular/core';
+import { Directive, DOCUMENT, inject } from '@angular/core';
 import { RndDialogContainer } from './rnd-dialog-container';
 
 @Directive({
