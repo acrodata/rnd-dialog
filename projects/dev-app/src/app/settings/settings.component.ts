@@ -60,6 +60,23 @@ export class SettingsComponent {
       name: 'disableClose',
       type: 'switch',
     },
+    top: {
+      name: 'top Constraint',
+      type: 'switch',
+      default: true,
+    },
+    left: {
+      name: 'Left Constraint',
+      type: 'switch',
+    },
+    right: {
+      name: 'Right Constraint',
+      type: 'switch',
+    },
+    bottom: {
+      name: 'Bottom Constraint',
+      type: 'switch',
+    },
   };
 
   model = this.data.config;
