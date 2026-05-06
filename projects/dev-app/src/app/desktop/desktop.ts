@@ -4,8 +4,8 @@ import { ComponentType } from '@angular/cdk/portal';
 import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { format } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
-import { DialogWrapperComponent } from '../dialog-wrapper/dialog-wrapper.component';
-import { SettingsComponent } from '../settings/settings.component';
+import { DialogWrapper } from '../dialog-wrapper/dialog-wrapper';
+import { Settings } from '../settings/settings';
 
 export interface AppItem {
   component: ComponentType<any>;
@@ -18,14 +18,14 @@ export interface AppItem {
 @Component({
   selector: 'app-desktop',
   imports: [],
-  templateUrl: './desktop.component.html',
-  styleUrl: './desktop.component.scss',
+  templateUrl: './desktop.html',
+  styleUrl: './desktop.scss',
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'os-desktop',
   },
 })
-export class DesktopComponent implements OnInit {
+export class Desktop implements OnInit {
   private rndDialog = inject(RndDialog);
 
   dialogConfig: DialogConfig<any, DialogRef> = {
@@ -42,37 +42,37 @@ export class DesktopComponent implements OnInit {
 
   apps: AppItem[] = [
     {
-      component: DialogWrapperComponent,
+      component: DialogWrapper,
       name: 'Demo 1',
       color: '#ff605c',
       config: this.dialogConfig,
     },
     {
-      component: DialogWrapperComponent,
+      component: DialogWrapper,
       name: 'Demo 2',
       color: '#ffbd44',
       config: this.dialogConfig,
     },
     {
-      component: DialogWrapperComponent,
+      component: DialogWrapper,
       name: 'Demo 3',
       color: '#00ca4e',
       config: this.dialogConfig,
     },
     {
-      component: DialogWrapperComponent,
+      component: DialogWrapper,
       name: 'Demo 4',
       color: '#0043ff',
       config: this.dialogConfig,
     },
     {
-      component: DialogWrapperComponent,
+      component: DialogWrapper,
       name: 'Demo 5',
       color: '#8a03c4',
       config: this.dialogConfig,
     },
     {
-      component: SettingsComponent,
+      component: Settings,
       name: 'Settings',
       color: '#e1dfe1',
       config: this.dialogConfig,

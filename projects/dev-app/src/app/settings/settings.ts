@@ -3,9 +3,9 @@ import { RndDialogDragHandle } from '@acrodata/rnd-dialog';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AppItem } from '../desktop/desktop.component';
-import { DialogContentComponent } from '../dialog-content/dialog-content.component';
-import { DialogHeaderComponent } from '../dialog-header/dialog-header.component';
+import { AppItem } from '../desktop/desktop';
+import { DialogContent } from '../dialog-content/dialog-content';
+import { DialogHeader } from '../dialog-header/dialog-header';
 
 @Component({
   selector: 'app-settings',
@@ -13,13 +13,13 @@ import { DialogHeaderComponent } from '../dialog-header/dialog-header.component'
     FormsModule,
     GuiModule,
     RndDialogDragHandle,
-    DialogHeaderComponent,
-    DialogContentComponent,
+    DialogHeader,
+    DialogContent,
   ],
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.scss',
+  templateUrl: './settings.html',
+  styleUrl: './settings.scss',
 })
-export class SettingsComponent {
+export class Settings {
   dialogRef = inject(DialogRef);
   data = inject<AppItem>(DIALOG_DATA);
 

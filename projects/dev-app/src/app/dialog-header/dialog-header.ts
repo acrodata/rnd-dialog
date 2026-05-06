@@ -4,10 +4,10 @@ import { Component, inject } from '@angular/core';
 @Component({
   selector: 'app-dialog-header',
   imports: [],
-  templateUrl: './dialog-header.component.html',
-  styleUrl: './dialog-header.component.scss',
+  templateUrl: './dialog-header.html',
+  styleUrl: './dialog-header.scss',
 })
-export class DialogHeaderComponent {
+export class DialogHeader {
   private dialogRef = inject(DialogRef);
 
   close() {

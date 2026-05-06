@@ -16,10 +16,10 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     RndDialogDragHandle,
   ],
-  templateUrl: './examples.component.html',
-  styleUrl: './examples.component.scss',
+  templateUrl: './examples.html',
+  styleUrl: './examples.scss',
 })
-export class ExamplesComponent {
+export class Examples {
   private dialog = inject(MatDialog);
   private rndDialog = inject(RndDialog);
 

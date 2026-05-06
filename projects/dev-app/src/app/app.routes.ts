@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { DesktopComponent } from './desktop/desktop.component';
-import { ExamplesComponent } from './examples/examples.component';
+import { Desktop } from './desktop/desktop';
+import { Examples } from './examples/examples';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
-  { path: 'home', component: DesktopComponent },
-  { path: 'examples', component: ExamplesComponent },
+  { path: 'home', component: Desktop },
+  { path: 'examples', component: Examples },
   { path: '**', redirectTo: 'home' },
 ];
