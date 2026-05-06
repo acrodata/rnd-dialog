@@ -1,11 +1,11 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     {
       provide: OVERLAY_DEFAULT_CONFIG,

@@ -1,7 +1,7 @@
 import { RndDialog } from '@acrodata/rnd-dialog';
 import { DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
-import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { format } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { DialogWrapper } from '../dialog-wrapper/dialog-wrapper';
@@ -26,6 +26,7 @@ export interface AppItem {
   },
 })
 export class Desktop implements OnInit {
+  private cdr = inject(ChangeDetectorRef);
   private rndDialog = inject(RndDialog);
 
   dialogConfig: DialogConfig<any, DialogRef> = {
@@ -96,9 +97,11 @@ export class Desktop implements OnInit {
     });
     dialog.closed.subscribe(v => {
       app.active = false;
+      this.cdr.detectChanges();
     });
 
     app.active = true;
+    this.cdr.detectChanges();
   }
 
   getCurrentDatetime() {
@@ -106,6 +109,7 @@ export class Desktop implements OnInit {
       this.currentDatetime = format(Date.now(), 'MMM do EEE HH:mm', {
         locale: zhCN,
       });
+      this.cdr.detectChanges();
     }, 1000);
   }
 }

@@ -1,10 +1,11 @@
 import { CdkDialogContainer, Dialog, DialogRef } from '@angular/cdk/dialog';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
+import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
-  DOCUMENT,
   inject,
   OnInit,
   ViewEncapsulation,
@@ -38,6 +39,7 @@ type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
   },
 })
 export class RndDialogContainer extends CdkDialogContainer implements OnInit, AfterViewInit {
+  private cdr = inject(ChangeDetectorRef);
   private dialog = inject(Dialog);
   private dialogRef = inject(DialogRef);
   private document = inject(DOCUMENT);
@@ -101,6 +103,8 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     this.x = (window.innerWidth - this.w) / 2;
     this.y = (window.innerHeight - this.h) / 2;
 
+    this.cdr.markForCheck();
+
     this.setActive();
   }
 
@@ -124,6 +128,8 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
 
     this.pointerStartX = e.clientX;
     this.pointerStartY = e.clientY;
+
+    this.cdr.markForCheck();
 
     this.document.addEventListener('pointermove', this.onResize, { passive: false });
     this.document.addEventListener('pointerup', this.onResizeEnd, { passive: false });
@@ -208,11 +214,14 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
         this.y = nY;
         break;
     }
+
+    this.cdr.markForCheck();
   };
 
   onResizeEnd = (e: PointerEvent) => {
     this.document.removeEventListener('pointermove', this.onResize);
     this.document.removeEventListener('pointerup', this.onResizeEnd);
+    this.cdr.markForCheck();
   };
 
   setActive() {
@@ -233,9 +242,10 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
 
     setTimeout(() => {
       openDialogRefs.forEach(ref => {
-        (ref.containerInstance as RndDialogContainer).isActive = false;
+        const instance = ref.containerInstance as RndDialogContainer;
+        instance.updateActiveState(false);
       });
-      this.isActive = true;
+      this.updateActiveState(true);
     });
   }
 
@@ -245,5 +255,10 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
       .sort(
         (a, b) => +a.overlayRef.hostElement.style.zIndex - +b.overlayRef.hostElement.style.zIndex
       );
+  }
+
+  updateActiveState(value: boolean) {
+    this.isActive = value;
+    this.cdr.markForCheck();
   }
 }
