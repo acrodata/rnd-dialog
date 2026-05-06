@@ -3,7 +3,6 @@ import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   inject,
@@ -20,7 +19,6 @@ type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
   templateUrl: './rnd-dialog-container.html',
   styleUrl: './rnd-dialog-container.scss',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Default,
   host: {
     'class': 'rnd-dialog-container',
     'tabindex': '-1',
