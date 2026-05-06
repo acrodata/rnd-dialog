@@ -19,14 +19,8 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
     "paths": {
-      "@acrodata/rnd-dialog": [
-        "projects/rnd-dialog/src/public-api"
-      ]
+      "@acrodata/rnd-dialog": ["projects/rnd-dialog/src/public-api"]
     }
   },
   "angularCompilerOptions": {
