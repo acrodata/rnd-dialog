@@ -12,6 +12,12 @@ Resizable and draggable dialog based on CDK dialog.
 [Documentation](https://github.com/acrodata/rnd-dialog?tab=readme-ov-file#rnd-dialog) |
 [Playground](https://acrodata.github.io/rnd-dialog/)
 
+## Compatibility
+
+| Angular | @acrodata/rnd-dialog |
+| ------- | -------------------- |
+| >=17    | 0.x                  |
+
 ## Installation
 
 ```bash
