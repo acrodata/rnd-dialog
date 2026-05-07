@@ -94,6 +94,9 @@ export class Desktop implements OnInit {
     const dialog = this.rndDialog.open(app.component, {
       ...this.dialogConfig,
       data: app,
+      boundary: {
+        top: 24,
+      },
     });
     dialog.closed.subscribe(v => {
       app.active = false;

@@ -1,7 +1,9 @@
 import { DialogRef } from '@angular/cdk/dialog';
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectorRef, Directive, inject } from '@angular/core';
+import { RndDialogConfigMap } from './rnd-dialog-config';
 import { RndDialogContainer } from './rnd-dialog-container';
+import { getBoundaryRect } from './utils';
 
 @Directive({
   selector: '[rnd-dialog-drag-handle], [rndDialogDragHandle]',
@@ -11,18 +13,33 @@ import { RndDialogContainer } from './rnd-dialog-container';
   },
 })
 export class RndDialogDragHandle {
-  private cdr = inject(ChangeDetectorRef);
-  private dialogRef = inject(DialogRef);
-  private document = inject(DOCUMENT);
+  private _cdr = inject(ChangeDetectorRef);
+  private _dialogRef = inject(DialogRef);
+  private _document = inject(DOCUMENT);
+  private _configMap = inject(RndDialogConfigMap);
+
+  get boundaryRect() {
+    const config = this._configMap.get(this._dialogRef.id);
+    const boundaryRect = getBoundaryRect(config?.boundary);
+    return {
+      // Dragging upward cannot exceed the top of the screen, following Mac window behavior
+      top: boundaryRect?.top ?? 0,
+      bottom: boundaryRect?.bottom ?? Infinity,
+      left: boundaryRect?.left ?? -Infinity,
+      right: boundaryRect?.right ?? Infinity,
+    };
+  }
 
   isDragging = false;
 
   get containerInstance() {
-    return this.dialogRef.containerInstance as RndDialogContainer;
+    return this._dialogRef.containerInstance as RndDialogContainer;
   }
 
   x = this.containerInstance.x;
   y = this.containerInstance.y;
+  w = this.containerInstance.w;
+  h = this.containerInstance.h;
 
   pointerStartX = 0;
   pointerStartY = 0;
@@ -42,10 +59,10 @@ export class RndDialogDragHandle {
     this.pointerStartX = e.clientX;
     this.pointerStartY = e.clientY;
 
-    this.cdr.markForCheck();
+    this._cdr.markForCheck();
 
-    this.document.addEventListener('pointermove', this.onDrag, { passive: false });
-    this.document.addEventListener('pointerup', this.onDragEnd, { passive: false });
+    this._document.addEventListener('pointermove', this.onDrag, { passive: false });
+    this._document.addEventListener('pointerup', this.onDragEnd, { passive: false });
   }
 
   onDrag = (e: PointerEvent) => {
@@ -56,18 +73,23 @@ export class RndDialogDragHandle {
     const distX = e.clientX - this.pointerStartX;
     const distY = e.clientY - this.pointerStartY;
 
-    this.containerInstance.x = this.x + distX;
-    // Dragging upward cannot exceed the top of the screen, following Mac window behavior
-    this.containerInstance.y = Math.max(0, this.y + distY);
+    let newX = this.x + distX;
+    let newY = this.y + distY;
 
-    this.cdr.markForCheck();
+    newX = Math.max(this.boundaryRect.left, Math.min(newX, this.boundaryRect.right - this.w));
+    newY = Math.max(this.boundaryRect.top, Math.min(newY, this.boundaryRect.bottom - this.h));
+
+    this.containerInstance.x = newX;
+    this.containerInstance.y = newY;
+
+    this._cdr.markForCheck();
   };
 
   onDragEnd = (e: PointerEvent) => {
     this.isDragging = false;
-    this.cdr.markForCheck();
+    this._cdr.markForCheck();
 
-    this.document.removeEventListener('pointermove', this.onDrag);
-    this.document.removeEventListener('pointerup', this.onDragEnd);
+    this._document.removeEventListener('pointermove', this.onDrag);
+    this._document.removeEventListener('pointerup', this.onDragEnd);
   };
 }

@@ -1,6 +1,5 @@
 import { CdkDialogContainer, Dialog, DialogRef } from '@angular/cdk/dialog';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -9,7 +8,8 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { getElementSize } from './utils';
+import { RndDialogConfigMap } from './rnd-dialog-config';
+import { getBoundaryRect, getElementSize } from './utils';
 
 type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
 
@@ -37,17 +37,28 @@ type resizableHandleDir = 'n' | 'e' | 's' | 'w' | 'ne' | 'se' | 'sw' | 'nw';
   },
 })
 export class RndDialogContainer extends CdkDialogContainer implements OnInit, AfterViewInit {
-  private cdr = inject(ChangeDetectorRef);
-  private dialog = inject(Dialog);
-  private dialogRef = inject(DialogRef);
-  private document = inject(DOCUMENT);
+  private _cdr = inject(ChangeDetectorRef);
+  private _dialog = inject(Dialog);
+  private _dialogRef = inject(DialogRef);
+  private _configMap = inject(RndDialogConfigMap);
+
+  get boundaryRect() {
+    const config = this._configMap.get(this._dialogRef.id);
+    const boundaryRect = getBoundaryRect(config?.boundary);
+    return {
+      top: boundaryRect?.top ?? 0,
+      bottom: boundaryRect?.bottom ?? window.innerHeight,
+      left: boundaryRect?.left ?? 0,
+      right: boundaryRect?.right ?? window.innerWidth,
+    };
+  }
 
   get containerElement() {
     return this._elementRef.nativeElement as HTMLElement;
   }
 
   get overlayElement() {
-    return this.dialogRef.overlayRef.overlayElement;
+    return this._dialogRef.overlayRef.overlayElement;
   }
 
   isActive = true;
@@ -101,7 +112,7 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     this.x = (window.innerWidth - this.w) / 2;
     this.y = (window.innerHeight - this.h) / 2;
 
-    this.cdr.markForCheck();
+    this._cdr.markForCheck();
 
     this.setActive();
   }
@@ -127,10 +138,10 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     this.pointerStartX = e.clientX;
     this.pointerStartY = e.clientY;
 
-    this.cdr.markForCheck();
+    this._cdr.markForCheck();
 
-    this.document.addEventListener('pointermove', this.onResize, { passive: false });
-    this.document.addEventListener('pointerup', this.onResizeEnd, { passive: false });
+    this._document.addEventListener('pointermove', this.onResize, { passive: false });
+    this._document.addEventListener('pointerup', this.onResizeEnd, { passive: false });
   }
 
   onResize = (e: PointerEvent) => {
@@ -143,37 +154,37 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     const eW = Math.min(
       Math.max(this.startW + distX, this.minW),
       this.maxW,
-      window.innerWidth - this.startX
+      this.boundaryRect.right - this.startX
     );
     // s height
     const sH = Math.min(
       Math.max(this.startH + distY, this.minH),
       this.maxH,
-      window.innerHeight - this.startY
+      this.boundaryRect.bottom - this.startY
     );
     // w width
     const wW = Math.min(
       Math.max(this.startW - distX, this.minW),
       this.maxW,
-      this.startW + this.startX
+      this.startW + this.startX - this.boundaryRect.left
     );
     // n height
     const nH = Math.min(
       Math.max(this.startH - distY, this.minH),
       this.maxH,
-      this.startH + this.startY
+      this.startH + this.startY - this.boundaryRect.top
     );
     // The x coord cannot exceed the screen boundary, following Mac window behavior
     const wX = Math.max(
       this.startW - distX > this.minW ? this.startX + distX : this.restrictX,
       this.startX + this.startW - this.maxW,
-      0
+      this.boundaryRect.left
     );
     // The y coord cannot exceed the screen boundary, following Mac window behavior
     const nY = Math.max(
       this.startH - distY > this.minH ? this.startY + distY : this.restrictY,
       this.startY + this.startH - this.maxH,
-      0
+      this.boundaryRect.top
     );
 
     switch (this.dir) {
@@ -213,22 +224,22 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
         break;
     }
 
-    this.cdr.markForCheck();
+    this._cdr.markForCheck();
   };
 
   onResizeEnd = (e: PointerEvent) => {
-    this.document.removeEventListener('pointermove', this.onResize);
-    this.document.removeEventListener('pointerup', this.onResizeEnd);
-    this.cdr.markForCheck();
+    this._document.removeEventListener('pointermove', this.onResize);
+    this._document.removeEventListener('pointerup', this.onResizeEnd);
+    this._cdr.markForCheck();
   };
 
   setActive() {
     // First, get a list of instances sorted by the element's z-index
     const openDialogRefs = this.getSortedDialogs();
     // Move the active dialog to the end of the array
-    const index = openDialogRefs.indexOf(this.dialogRef);
+    const index = openDialogRefs.indexOf(this._dialogRef);
     openDialogRefs.splice(index, 1);
-    openDialogRefs.push(this.dialogRef);
+    openDialogRefs.push(this._dialogRef);
     // Set new z-index values according to the order in the array
     openDialogRefs.forEach((ref, index) => {
       ref.overlayRef.hostElement.style.zIndex = this.defaultZIndex + 1 + index + '';
@@ -248,7 +259,7 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   }
 
   getSortedDialogs() {
-    return [...this.dialog.openDialogs]
+    return [...this._dialog.openDialogs]
       .filter(ref => (ref.containerInstance as RndDialogContainer).handleDirs)
       .sort(
         (a, b) => +a.overlayRef.hostElement.style.zIndex - +b.overlayRef.hostElement.style.zIndex
@@ -257,6 +268,6 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
 
   updateActiveState(value: boolean) {
     this.isActive = value;
-    this.cdr.markForCheck();
+    this._cdr.markForCheck();
   }
 }
