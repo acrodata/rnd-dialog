@@ -1,6 +1,6 @@
 {
   "name": "@acrodata/rnd-dialog",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Resizable and draggable dialog",
   "publishConfig": {
     "access": "public"
@@ -20,6 +20,7 @@
   ],
   "peerDependencies": {
     "@angular/cdk": ">=17.0.0",
+    "@angular/common": ">=17.0.0",
     "@angular/core": ">=17.0.0"
   },
   "dependencies": {
