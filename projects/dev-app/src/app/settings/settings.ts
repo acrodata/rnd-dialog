@@ -9,13 +9,7 @@ import { DialogHeader } from '../dialog-header/dialog-header';
 
 @Component({
   selector: 'app-settings',
-  imports: [
-    FormsModule,
-    GuiModule,
-    RndDialogDragHandle,
-    DialogHeader,
-    DialogContent,
-  ],
+  imports: [FormsModule, GuiModule, RndDialogDragHandle, DialogHeader, DialogContent],
   templateUrl: './settings.html',
   styleUrl: './settings.scss',
 })
@@ -59,6 +53,34 @@ export class Settings {
     disableClose: {
       name: 'disableClose',
       type: 'switch',
+    },
+    boundary: {
+      name: 'boundary',
+      type: 'inline',
+      description: 'string | HTMLElement | RndDialogBoundaryRect',
+      children: {
+        top: {
+          name: 'top',
+          type: 'number',
+          default: 24,
+          col: 25,
+        },
+        right: {
+          name: 'right',
+          type: 'number',
+          col: 25,
+        },
+        bottom: {
+          name: 'bottom',
+          type: 'number',
+          col: 25,
+        },
+        left: {
+          name: 'left',
+          type: 'number',
+          col: 25,
+        },
+      },
     },
   };
 

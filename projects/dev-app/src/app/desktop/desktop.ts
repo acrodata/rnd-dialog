@@ -1,4 +1,4 @@
-import { RndDialog } from '@acrodata/rnd-dialog';
+import { RndDialog, RndDialogConfig } from '@acrodata/rnd-dialog';
 import { DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { ChangeDetectorRef, Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
@@ -29,16 +29,19 @@ export class Desktop implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private rndDialog = inject(RndDialog);
 
-  dialogConfig: DialogConfig<any, DialogRef> = {
+  dialogConfig: RndDialogConfig<any, DialogRef> = {
     data: 'Hello, World!',
     width: '400px',
-    height: '400px',
+    height: '450px',
     minWidth: '20%',
     minHeight: '20%',
     maxWidth: '80vw',
     maxHeight: '80vh',
     hasBackdrop: false,
     disableClose: false,
+    boundary: {
+      top: 24,
+    },
   };
 
   apps: AppItem[] = [
@@ -94,9 +97,6 @@ export class Desktop implements OnInit {
     const dialog = this.rndDialog.open(app.component, {
       ...this.dialogConfig,
       data: app,
-      boundary: {
-        top: 24,
-      },
     });
     dialog.closed.subscribe(v => {
       app.active = false;

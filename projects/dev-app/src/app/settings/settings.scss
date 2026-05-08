@@ -1,6 +1,9 @@
 .btns {
+  position: sticky;
+  bottom: 0;
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  padding: 0 12px;
+  width: 100%;
+  padding: 12px;
 }
