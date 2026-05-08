@@ -91,7 +91,7 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   pointerStartX = 0;
   pointerStartY = 0;
 
-  defaultZIndex = 1000;
+  defaultZIndex = 900;
 
   ngOnInit(): void {
     const { minWidth, minHeight, maxWidth, maxHeight } = this.overlayElement.style;
@@ -242,10 +242,10 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     openDialogRefs.push(this._dialogRef);
     // Set new z-index values according to the order in the array
     openDialogRefs.forEach((ref, index) => {
-      ref.overlayRef.hostElement.style.zIndex = this.defaultZIndex + 1 + index + '';
+      ref.overlayRef.hostElement.style.zIndex = this.defaultZIndex + index + '';
       // If a backdrop is shown, its z-index should also be set
       if (ref.overlayRef.backdropElement) {
-        ref.overlayRef.backdropElement.style.zIndex = this.defaultZIndex + 1 + index + '';
+        ref.overlayRef.backdropElement.style.zIndex = this.defaultZIndex + index + '';
       }
     });
 
