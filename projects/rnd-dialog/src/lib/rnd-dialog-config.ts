@@ -1,4 +1,4 @@
-import { DialogConfig, DialogContainer } from '@angular/cdk/dialog';
+import { DialogConfig } from '@angular/cdk/dialog';
 import { BasePortalOutlet } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 
@@ -12,7 +12,7 @@ export interface RndDialogBoundaryRect {
 export class RndDialogConfig<
   D = unknown,
   R = unknown,
-  C extends DialogContainer = BasePortalOutlet,
+  C extends BasePortalOutlet = BasePortalOutlet,
 > extends DialogConfig<D, R, C> {
   boundary?: string | HTMLElement | RndDialogBoundaryRect;
 }
