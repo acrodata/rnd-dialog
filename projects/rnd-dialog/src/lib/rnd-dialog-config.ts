@@ -15,6 +15,7 @@ export class RndDialogConfig<
   C extends BasePortalOutlet = BasePortalOutlet,
 > extends DialogConfig<D, R, C> {
   boundary?: string | HTMLElement | RndDialogBoundaryRect;
+  zIndex?: number;
 }
 
 @Injectable({ providedIn: 'root' })

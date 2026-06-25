@@ -42,9 +42,12 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   private _dialogRef = inject(DialogRef);
   private _configMap = inject(RndDialogConfigMap);
 
+  get config() {
+    return this._configMap.get(this._dialogRef.id);
+  }
+
   get boundaryRect() {
-    const config = this._configMap.get(this._dialogRef.id);
-    const boundaryRect = getBoundaryRect(config?.boundary);
+    const boundaryRect = getBoundaryRect(this.config?.boundary);
     return {
       top: boundaryRect?.top ?? 0,
       bottom: boundaryRect?.bottom ?? window.innerHeight,
@@ -90,8 +93,6 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
   // The coordinates when the mouse is pressed down
   pointerStartX = 0;
   pointerStartY = 0;
-
-  defaultZIndex = 900;
 
   ngOnInit(): void {
     const { minWidth, minHeight, maxWidth, maxHeight } = this.overlayElement.style;
@@ -241,11 +242,12 @@ export class RndDialogContainer extends CdkDialogContainer implements OnInit, Af
     openDialogRefs.splice(index, 1);
     openDialogRefs.push(this._dialogRef);
     // Set new z-index values according to the order in the array
+    const defaultZIndex = this.config?.zIndex ?? 1000;
     openDialogRefs.forEach((ref, index) => {
-      ref.overlayRef.hostElement.style.zIndex = this.defaultZIndex + index + '';
+      ref.overlayRef.hostElement.style.zIndex = defaultZIndex + index + '';
       // If a backdrop is shown, its z-index should also be set
       if (ref.overlayRef.backdropElement) {
-        ref.overlayRef.backdropElement.style.zIndex = this.defaultZIndex + index + '';
+        ref.overlayRef.backdropElement.style.zIndex = defaultZIndex + index + '';
       }
     });
 

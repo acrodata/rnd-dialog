@@ -18,9 +18,12 @@ export class RndDialogDragHandle {
   private _document = inject(DOCUMENT);
   private _configMap = inject(RndDialogConfigMap);
 
+  get config() {
+    return this._configMap.get(this._dialogRef.id);
+  }
+
   get boundaryRect() {
-    const config = this._configMap.get(this._dialogRef.id);
-    const boundaryRect = getBoundaryRect(config?.boundary);
+    const boundaryRect = getBoundaryRect(this.config?.boundary);
     return {
       // Dragging upward cannot exceed the top of the screen, following Mac window behavior
       top: boundaryRect?.top ?? 0,
